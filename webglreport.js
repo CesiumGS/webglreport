@@ -108,7 +108,7 @@ WebGLReport.main = function() {
 WebGLReport.getWebGLSupport = function() {
 	var contextNames = ["webgl", "experimental-webgl"];
 	for(var i = 0; i < contextNames.length; i++){
-		try{ //Needed for unsupport browsers, otherwise it gets caught up on the next line
+		try{ //Needed for unsupported browsers, otherwise it gets caught up on the next line
 			var context = document.getElementById("testCanvas").getContext(contextNames[i]);
 			if(context) {
 				return {
