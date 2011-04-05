@@ -5,9 +5,9 @@ WebGLReport.main = function() {
 	//Formats output into a table
 	function display(string, data) {
 		document.writeln('<tr>');
-			document.writeln('<td><b><font face="Arial" size=2>' + string + '</font></b></td>');
+			document.writeln('<td><b>' + string + '</b></td>');
 			if(data){
-				document.writeln('<td><font face="Arial" size=2>' + data + '</font></td>');
+				document.writeln('<td>' + data + '</td>');
 			}
 		document.writeln('</tr>');
 	}
@@ -97,21 +97,27 @@ WebGLReport.main = function() {
 		
 	}
 	else {
-		document.writeln('WebGL is not supported by this browser.<br/>');
+		document.writeln('<br/>WebGL is not supported by this browser:  <br/>');
 		document.writeln('Try installing the latest version of <a href="http://www.mozilla.com/en-US/firefox/fx/">Firefox</a>');
-		document.writeln('or <a href="http://www.google.com/chrome">Chrome</a>.<br/>');
+		document.writeln('or <a href="http://www.google.com/chrome">Chrome</a>,<br/>');
+		document.writeln('or check out <a href="http://learningwebgl.com/blog/?p=11">Getting Started with WebGL</a>'); 
+		document.writeln('at the <a href="http://learningwebgl.com/blog/">Learning WebGL Blog</a>.<br/><br/>');
 	}
 }
 
 WebGLReport.getWebGLSupport = function() {
 	var contextNames = ["webgl", "experimental-webgl"];
 	for(var i = 0; i < contextNames.length; i++){
-		var context = document.getElementById("testCanvas").getContext(contextNames[i]);
-		if(context) {
-			return {
-				name : contextNames[i],
-				gl : context
-			};
+		try{ //Needed for unsupport browsers, otherwise it gets caught up on the next line
+			var context = document.getElementById("testCanvas").getContext(contextNames[i]);
+			if(context) {
+				return {
+					name : contextNames[i],
+					gl : context
+				};
+			}
+		}
+		catch(e){
 		}
 	}
 	

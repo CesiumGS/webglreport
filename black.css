@@ -1,0 +1,32 @@
+a:hover {color: #FFFFFF; text-decoration: underline; }
+a:visited{color: #AFC7C7; text-decoration: underline; }
+
+h1 {
+color: white;
+text-align: center;
+font-family: arial; 
+font-size: 26pt;
+}
+
+body {
+background-image: url(http://www.agi.com/media-center/multimedia/image-gallery/images/ImageGallery/Images/88.jpg);
+background-position: right top;
+background-repeat: no-repeat;
+background-color: #000000;
+color: white;
+}
+
+table {
+width: 600px;
+color: black;
+font-size: 9pt;
+border-style: ridge;
+border-width: 3px;
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 5px;
+padding-right: 5px;
+border-color: #AFC7C7;
+background-color: #FFFFFF
+}
+

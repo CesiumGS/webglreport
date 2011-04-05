@@ -26,25 +26,25 @@ Portions Copyright Stephen Chapman.  See below.
 <html>
 <head>
 	<title>WebGL Report</title>
+	<link rel="stylesheet" type="text/css" href="black.css" />
 	<script type="text/javascript" src="webglreport.js"></script>
 </head>
 <body>
 	<center>
-		<a href="http://www.agi.com/"><img src="images/agilogo.jpg" width="200" height="91" alt="Analytical Graphics, Inc." /></a>
-		<h1><font face="Arial">WebGL Report</font></h1>
+		<a href="http://www.agi.com/"><img src="images/AGILogo3.jpg"/></a>
+		<h1>WebGL Report</h1>
 	</center>
-	
 	<canvas id="testCanvas" style="border: none;" width="1" height="1"></canvas>
-	<br/>
 	
-	<script type="text/javascript">
-		document.write('<center>');
-		document.write('<table>');
-		WebGLReport.main();
-		document.write('</table>');
-		document.write('</center>');
-	</script>
-	
+	<font face ="Arial">
+	<center>
+		<script type="text/javascript">
+			document.write('<table id="report">');
+			WebGLReport.main();
+			document.write('</table>');
+		</script>
+	</center>
+	</font>
 	
 </body>
 </html>
