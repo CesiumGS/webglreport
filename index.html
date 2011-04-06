@@ -20,9 +20,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-Portions Copyright Stephen Chapman.  See below.
 -->
+<!DOCTYPE HTML>
 <html>
 <head>
 	<title>WebGL Report</title>
@@ -43,21 +42,16 @@ Portions Copyright Stephen Chapman.  See below.
 	</script>
 </head>
 <body>
-	<center>
-		<a href="http://www.agi.com/"><img src="images/AGILogo3.jpg"/></a>
-		<h1>WebGL Report</h1>
-	</center>
+	<a href="http://www.agi.com/"><img src="images/AGILogo3.jpg"/></a>
+	<h1>WebGL Report</h1>
+	
 	<canvas id="testCanvas" style="border: none;" width="1" height="1"></canvas>
-	
-	<font face ="Arial">
-	<center>
+	<div class="align-center">
 		<script type="text/javascript">
-			document.write('<table id="report">');
+			document.writeln('<table>');
 			WebGLReport.main();
-			document.write('</table>');
+			document.writeln('</table>');
 		</script>
-	</center>
-	</font>
-	
+	</div>
 </body>
 </html>

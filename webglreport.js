@@ -1,3 +1,27 @@
+/**
+Copyright (c) 2011 Analytical Graphics, Inc.
+
+The MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+go
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
 var WebGLReport = {};
 
 WebGLReport.main = function() {
@@ -6,7 +30,7 @@ WebGLReport.main = function() {
 	function display(string, data) {
 		document.writeln('<tr>');
 			document.writeln('<td><b>' + string + '</b></td>');
-			if(data){
+			if(data) {
 				document.writeln('<td>' + data + '</td>');
 			}
 		document.writeln('</tr>');
@@ -27,7 +51,7 @@ WebGLReport.main = function() {
 		var renderer = gl.getParameter(gl.RENDERER);
 		display("Renderer: ", renderer);
 		
-		display("<br/><u>Pixel Depths</u>")		
+		display("<br/><u>Pixel Depths</u>");		
 		var redBits = gl.getParameter(gl.RED_BITS);
 		display("Red Bits: ", redBits );
 		var greenBits = gl.getParameter(gl.GREEN_BITS);
@@ -42,7 +66,7 @@ WebGLReport.main = function() {
 		display("Stencil Bits: ", stencilBits || '0');
 		
 		
-		display("<br/><u>Implementation Dependent States</u>")
+		display("<br/><u>Implementation Dependent States</u>");
 		var maximumCombinedTextureImageUnits = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS); // min: 8
 		display("Max. Combined Texture Image Units: ", maximumCombinedTextureImageUnits);
 		var maximumCubeMapTextureSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);               // min: 16
@@ -64,46 +88,48 @@ WebGLReport.main = function() {
 		
 		
 		var aliasedLineWidthRange = gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE); // must include 1
-		var aliasedLWR = new Array();
+		var aliasedLWR = [];
 		for(var i = 0; i < aliasedLineWidthRange.length; i++) {
 			aliasedLWR.push(aliasedLineWidthRange[i]);
 		}
-		display("Aliased Line Width Range: ", '['+aliasedLWR.toString()+']');
+		display("Aliased Line Width Range: ", '[' + aliasedLWR.toString() + ']');
 		
 		var aliasedPointSizeRange = gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE); // must include 1 
-		var aliasedPSR = new Array();
-		for(var i = 0; i < aliasedPointSizeRange.length; i++) {
+		var aliasedPSR = [];
+		for(i = 0; i < aliasedPointSizeRange.length; i++) {
 			aliasedPSR.push(aliasedPointSizeRange[i]);	
 		}
-		display("Aliased Line Point Size Range: ", '['+aliasedPSR.toString()+']');
+		display("Aliased Line Point Size Range: ", '[' + aliasedPSR.toString() + ']');
 		
 		var maximumViewportDimensions = gl.getParameter(gl.MAX_VIEWPORT_DIMS);	// includes 2		
-		var maxVPDim = new Array();
-		for(var i = 0; i < maximumViewportDimensions.length; i++) {
+		var maxVPDim = [];
+		for(i = 0; i < maximumViewportDimensions.length; i++) {
 			maxVPDim.push(maximumViewportDimensions[i]);
 		}
-		display("Max. Viewport Dimensions", '['+maxVPDim.toString()+']');
+		display("Max. Viewport Dimensions", '['+ maxVPDim.toString() + ']');
 			
 		display('<br/><u>Supported Extensions:</u>');			
 		var extensions = gl.getSupportedExtensions();
 		if(extensions.length > 0) {
-			for(var i = 0; i < extensions.length; i++){
+			for(i = 0; i < extensions.length; i++) {
 				display(extensions[i]);
 			}
 		}
-		else{
+		else {
 			display("No extensions were found.");
 		}
 		
 	}
 	else {
-		document.writeln('<br/>WebGL is not supported by this browser:  <br/>');
+		document.writeln('<div class="ErrorMessage">');
+		document.writeln('<br/>WebGL is not supported by this browser.<br/>');
 		document.writeln('Try installing the latest version of <a href="http://www.mozilla.com/en-US/firefox/fx/">Firefox</a>');
 		document.writeln('or <a href="http://www.google.com/chrome">Chrome</a>,<br/>');
 		document.writeln('or check out <a href="http://learningwebgl.com/blog/?p=11">Getting Started with WebGL</a>'); 
 		document.writeln('at the <a href="http://learningwebgl.com/blog/">Learning WebGL Blog</a>.<br/><br/>');
+		document.writeln('</div>');
 	}
-}
+};
 
 WebGLReport.getWebGLSupport = function() {
 	var contextNames = ["webgl", "experimental-webgl"];
@@ -117,7 +143,7 @@ WebGLReport.getWebGLSupport = function() {
 				};
 			}
 		}
-		catch(e){
+		catch(e) {
 		}
 	}
 	
