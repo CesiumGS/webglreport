@@ -22,10 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-var WebGLReport = {};
+/*jslint evil: true */
 
-WebGLReport.main = function() {
-
+(function() {
 	//Formats output into a table
 	function display(string, data) {
 		document.writeln('<tr>');
@@ -35,11 +34,31 @@ WebGLReport.main = function() {
 			}
 		document.writeln('</tr>');
 	}
+	
+	function getWebGLSupport() {
+		var contextNames = ["webgl", "experimental-webgl"];
+		for(var i = 0; i < contextNames.length; i++){
+			try { //Needed for unsupported browsers, otherwise it gets caught up on the next line
+				var context = document.getElementById("testCanvas").getContext(contextNames[i]);
+				if(context) {
+					return {
+						name : contextNames[i],
+						gl : context
+					};
+				}
+			}
+			catch(e) {
+			}
+		}
+		return null;
+	}	
 
+	document.writeln('<table>');
+	
     display("Platform: ", navigator.platform);
     display("Broswer User Agent: ", navigator.userAgent);
 	
-	var contextInfo = WebGLReport.getWebGLSupport();
+	var contextInfo = getWebGLSupport();
 	if (contextInfo) {
 		display("Context Name:", contextInfo.name);
 		var gl = contextInfo.gl;
@@ -87,31 +106,25 @@ WebGLReport.main = function() {
 		display("Max. Vertex Uniform Vectors", maximumVertexUniformVectors);
 		
 		
-		var aliasedLineWidthRange = gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE); // must include 1
-		var aliasedLWR = [];
-		for(var i = 0; i < aliasedLineWidthRange.length; i++) {
-			aliasedLWR.push(aliasedLineWidthRange[i]);
-		}
-		display("Aliased Line Width Range: ", '[' + aliasedLWR.toString() + ']');
+		var aliasedLineWidthRange = gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE); // must include the value 1
+		display("Aliased Line Width Range: ", '[' + 
+			aliasedLineWidthRange[0] + ", " +
+			aliasedLineWidthRange[1] + ']');
 		
-		var aliasedPointSizeRange = gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE); // must include 1 
-		var aliasedPSR = [];
-		for(i = 0; i < aliasedPointSizeRange.length; i++) {
-			aliasedPSR.push(aliasedPointSizeRange[i]);	
-		}
-		display("Aliased Line Point Size Range: ", '[' + aliasedPSR.toString() + ']');
-		
-		var maximumViewportDimensions = gl.getParameter(gl.MAX_VIEWPORT_DIMS);	// includes 2		
-		var maxVPDim = [];
-		for(i = 0; i < maximumViewportDimensions.length; i++) {
-			maxVPDim.push(maximumViewportDimensions[i]);
-		}
-		display("Max. Viewport Dimensions", '['+ maxVPDim.toString() + ']');
+		var aliasedPointSizeRange = gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE); // must include the value 1 
+		display("Aliased Point Size Range: ", '[' + 
+			aliasedPointSizeRange[0] + ", " +
+			aliasedPointSizeRange[1] + ']');
+			
+		var maximumViewportDimensions = gl.getParameter(gl.MAX_VIEWPORT_DIMS);
+		display("Max. Viewport Dimensions", '[' + 
+			maximumViewportDimensions[0] + ", " +
+			maximumViewportDimensions[1] + ']');
 			
 		display('<br/><u>Supported Extensions:</u>');			
 		var extensions = gl.getSupportedExtensions();
 		if(extensions.length > 0) {
-			for(i = 0; i < extensions.length; i++) {
+			for(var i = 0; i < extensions.length; i++) {
 				display(extensions[i]);
 			}
 		}
@@ -129,23 +142,6 @@ WebGLReport.main = function() {
 		document.writeln('at the <a href="http://learningwebgl.com/blog/">Learning WebGL Blog</a>.<br/><br/>');
 		document.writeln('</div>');
 	}
-};
-
-WebGLReport.getWebGLSupport = function() {
-	var contextNames = ["webgl", "experimental-webgl"];
-	for(var i = 0; i < contextNames.length; i++){
-		try{ //Needed for unsupported browsers, otherwise it gets caught up on the next line
-			var context = document.getElementById("testCanvas").getContext(contextNames[i]);
-			if(context) {
-				return {
-					name : contextNames[i],
-					gl : context
-				};
-			}
-		}
-		catch(e) {
-		}
-	}
 	
-	return null;
-}
+	document.writeln('</table>');
+})();
