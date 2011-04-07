@@ -39,7 +39,7 @@ THE SOFTWARE.
 		var contextNames = ["webgl", "experimental-webgl"];
 		for(var i = 0; i < contextNames.length; i++){
 			try { //Needed for unsupported browsers, otherwise it gets caught up on the next line
-				var context = document.getElementById("testCanvas").getContext(contextNames[i]);
+				var context = document.getElementById("testCanvas").getContext(contextNames[i], { stencil : true });
 				if(context) {
 					return {
 						name : contextNames[i],
@@ -82,7 +82,7 @@ THE SOFTWARE.
 		var depthBits = gl.getParameter(gl.DEPTH_BITS);
 		display("Depth Bits: ", depthBits );
 		var stencilBits = gl.getParameter(gl.STENCIL_BITS);
-		display("Stencil Bits: ", stencilBits || '0');
+		display("Stencil Bits: ", stencilBits);
 		
 		
 		display("<br/><u>Implementation Dependent States</u>");
@@ -144,4 +144,5 @@ THE SOFTWARE.
 	}
 	
 	document.writeln('</table>');
+	document.writeln('<p align="center">WebGL Report on <a href="http://sourceforge.net/projects/webglreport/">SourceForge</a>.</p>');
 })();
