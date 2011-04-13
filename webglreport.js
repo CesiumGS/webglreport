@@ -86,6 +86,8 @@ THE SOFTWARE.
 		
 		
 		display("<br/><u>Implementation Dependent States</u>");
+        var maxRenderBufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE);
+        display("Max. Render Buffer Size: ", maxRenderBufferSize);
 		var maximumCombinedTextureImageUnits = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS); // min: 8
 		display("Max. Combined Texture Image Units: ", maximumCombinedTextureImageUnits);
 		var maximumCubeMapTextureSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);               // min: 16
