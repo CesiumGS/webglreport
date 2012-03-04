@@ -13,7 +13,6 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-go
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -22,129 +21,88 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-/*jslint evil: true */
+/*jslint browser: true, vars: true, white: true, nomen: true*/
+/*global $, _*/
+$(function() {
+    "use strict";
+    var canvas = $("<canvas />", { width: "1", height: "1" }).appendTo("body")[0];
+    var gl;
+    var contextName = _.find(["webgl", "experimental-webgl"], function(name) {
+        try {
+            gl = canvas.getContext(name, { stencil: true });
+            return !!gl;
+        } catch (e) {}
+        return false;
+    });
 
-(function() {
-	//Formats output into a table
-	function display(string, data) {
-		document.writeln('<tr>');
-			document.writeln('<td><b>' + string + '</b></td>');
-			if(data) {
-				document.writeln('<td>' + data + '</td>');
-			}
-		document.writeln('</tr>');
-	}
-	
-	function getWebGLSupport() {
-		var contextNames = ["webgl", "experimental-webgl"];
-		for(var i = 0; i < contextNames.length; i++){
-			try { //Needed for unsupported browsers, otherwise it gets caught up on the next line
-				var context = document.getElementById("testCanvas").getContext(contextNames[i], { stencil : true });
-				if(context) {
-					return {
-						name : contextNames[i],
-						gl : context
-					};
-				}
-			}
-			catch(e) {
-			}
-		}
-		return null;
-	}	
+    var template = _.template($("#reportTemplate").html());
+    var report = [
+        ["Platform", navigator.platform],
+        ["Browser User Agent", navigator.userAgent]
+    ];
 
-	document.writeln('<table>');
-	
-    display("Platform: ", navigator.platform);
-    display("Broswer User Agent: ", navigator.userAgent);
-	
-	var contextInfo = getWebGLSupport();
-	if (contextInfo) {
-		display("Context Name:", contextInfo.name);
-		var gl = contextInfo.gl;
-		display("GL Version: ", gl.getParameter(gl.VERSION));
-		var shadingLanguageVersion = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
-		display("Shading Language Version: ", shadingLanguageVersion);
-		var vendor = gl.getParameter(gl.VENDOR);
-		display("Vendor: ", vendor);
-		var renderer = gl.getParameter(gl.RENDERER);
-		display("Renderer: ", renderer);
-		
-		display("<br/><u>Pixel Depths</u>");		
-		var redBits = gl.getParameter(gl.RED_BITS);
-		display("Red Bits: ", redBits );
-		var greenBits = gl.getParameter(gl.GREEN_BITS);
-		display("Green Bits: ", greenBits );
-		var blueBits = gl.getParameter(gl.BLUE_BITS);
-		display("Blue Bits: ", blueBits );
-		var alphaBits = gl.getParameter(gl.ALPHA_BITS);
-		display("Alpha Bits: ", alphaBits );
-		var depthBits = gl.getParameter(gl.DEPTH_BITS);
-		display("Depth Bits: ", depthBits );
-		var stencilBits = gl.getParameter(gl.STENCIL_BITS);
-		display("Stencil Bits: ", stencilBits);
-		
-		
-		display("<br/><u>Implementation Dependent States</u>");
-        var maxRenderBufferSize = gl.getParameter(gl.MAX_RENDERBUFFER_SIZE);
-        display("Max. Render Buffer Size: ", maxRenderBufferSize);
-		var maximumCombinedTextureImageUnits = gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS); // min: 8
-		display("Max. Combined Texture Image Units: ", maximumCombinedTextureImageUnits);
-		var maximumCubeMapTextureSize = gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE);               // min: 16
-		display("Max. Cube Map Texture Size: ", maximumCubeMapTextureSize);
-		var maximumFragmentUniformVectors = gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS);        // min: 16
-		display("Max. Fragment Uniform Vectors: ", maximumFragmentUniformVectors);
-		var maximumTextureImageUnits = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS);                  // min: 8
-		display("Max. Texture Image Units: ", maximumTextureImageUnits);
-		var maximumTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);                               // min: 64
-		display("Max. Texture Size: ", maximumTextureSize);
-		var maximumVaryingVectors = gl.getParameter(gl.MAX_VARYING_VECTORS);                         // min: 8
-		display("Max. Varying Vectors", maximumVaryingVectors);
-		var maximumVertexAttributes = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);                        // min: 8
-		display("Max. Vertex Attributes", maximumVertexAttributes);
-		var maximumVertexTextureImageUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS);     // min: 0
-		display("Max. Vertex Texture Image Units: ", maximumVertexTextureImageUnits || '0');
-		var maximumVertexUniformVectors = gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS);            // min: 128
-		display("Max. Vertex Uniform Vectors", maximumVertexUniformVectors);
-		
-		
-		var aliasedLineWidthRange = gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE); // must include the value 1
-		display("Aliased Line Width Range: ", '[' + 
-			aliasedLineWidthRange[0] + ", " +
-			aliasedLineWidthRange[1] + ']');
-		
-		var aliasedPointSizeRange = gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE); // must include the value 1 
-		display("Aliased Point Size Range: ", '[' + 
-			aliasedPointSizeRange[0] + ", " +
-			aliasedPointSizeRange[1] + ']');
-			
-		var maximumViewportDimensions = gl.getParameter(gl.MAX_VIEWPORT_DIMS);
-		display("Max. Viewport Dimensions", '[' + 
-			maximumViewportDimensions[0] + ", " +
-			maximumViewportDimensions[1] + ']');
-			
-		display('<br/><u>Supported Extensions:</u>');			
-		var extensions = gl.getSupportedExtensions();
-		if(extensions.length > 0) {
-			for(var i = 0; i < extensions.length; i++) {
-				display(extensions[i]);
-			}
-		}
-		else {
-			display("No extensions were found.");
-		}
-		
-	}
-	else {
-		document.writeln('<div class="ErrorMessage">');
-		document.writeln('<br/>WebGL is not supported by this browser.<br/>');
-		document.writeln('Try installing the latest version of <a href="http://www.mozilla.com/en-US/firefox/fx/">Firefox</a>');
-		document.writeln('or <a href="http://www.google.com/chrome">Chrome</a>,<br/>');
-		document.writeln('or check out <a href="http://learningwebgl.com/blog/?p=11">Getting Started with WebGL</a>'); 
-		document.writeln('at the <a href="http://learningwebgl.com/blog/">Learning WebGL Blog</a>.<br/><br/>');
-		document.writeln('</div>');
-	}
-	
-	document.writeln('</table>');
-	document.writeln('<p align="center">WebGL Report on <a href="http://sourceforge.net/projects/webglreport/">SourceForge</a>.</p>');
-})();
+    function renderReport(header) {
+        _.each(report, function(item) {
+            if (item.length > 1 && item[0].length > 0) {
+                item[0] += ":";
+            }
+        });
+
+        $("#output").html(header + template({ report: report }));
+    }
+
+    if (!gl) {
+        renderReport($("#webglNotSupportedTemplate").html());
+        return;
+    }
+
+    function describeRange(value) {
+        return "[" + value[0] + ", " + value[1] + "]";
+    }
+
+    report.push(
+        ["Context Name", contextName],
+        ["GL Version", gl.getParameter(gl.VERSION)],
+        ["Shading Language Version", gl.getParameter(gl.SHADING_LANGUAGE_VERSION)],
+        ["Vendor", gl.getParameter(gl.VENDOR)],
+        ["Renderer", gl.getParameter(gl.RENDERER)],
+
+        ["Pixel Depths"],
+        ["Red Bits", gl.getParameter(gl.RED_BITS)],
+        ["Green Bits", gl.getParameter(gl.GREEN_BITS)],
+        ["Blue Bits", gl.getParameter(gl.BLUE_BITS)],
+        ["Alpha Bits", gl.getParameter(gl.ALPHA_BITS)],
+        ["Depth Bits", gl.getParameter(gl.DEPTH_BITS)],
+        ["Stencil Bits", gl.getParameter(gl.STENCIL_BITS)],
+
+        ["Implementation Dependent States"],
+        ["Max. Render Buffer Size", gl.getParameter(gl.MAX_RENDERBUFFER_SIZE)],
+        ["Max. Combined Texture Image Units", gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS)], // min: 8
+        ["Max. Cube Map Texture Size", gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE)], // min: 16
+        ["Max. Fragment Uniform Vectors", gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS)], // min: 16
+        ["Max. Texture Image Units", gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)], // min: 8
+        ["Max. Texture Size", gl.getParameter(gl.MAX_TEXTURE_SIZE)], // min: 64
+        ["Max. Varying Vectors", gl.getParameter(gl.MAX_VARYING_VECTORS)], // min: 8
+        ["Max. Vertex Attributes", gl.getParameter(gl.MAX_VERTEX_ATTRIBS)], // min: 8
+        ["Max. Vertex Texture Image Units", gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) || "0"], // min: 0
+        ["Max. Vertex Uniform Vectors", gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)], // min: 128
+        ["Aliased Line Width Range", describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE))], // must include the value 1
+        ["Aliased Point Size Range", describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE))], // must include the value 1
+        ["Max. Viewport Dimensions", describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS))],
+
+        ["Supported Extensions"]
+    );
+
+    var extensions = gl.getSupportedExtensions();
+    if (extensions.length > 0) {
+        report = report.concat(_.map(extensions, function(extension) {
+            return ["", extension];
+        }));
+    } else {
+        report.push(
+            ["", "No extensions were found."]
+        );
+    }
+
+    renderReport($("#webglSupportedTemplate").html());
+});

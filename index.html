@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <!--
 Copyright (c) 2011 Analytical Graphics, Inc.
 
@@ -13,7 +14,6 @@ furnished to do so, subject to the following conditions:
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-go
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -21,26 +21,62 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 -->
-<!DOCTYPE HTML>
 <html>
 <head>
 	<title>WebGL Report</title>
 	<link rel="stylesheet" type="text/css" href="black.css" />
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
+	<script type="text/javascript" src="webglreport.js"></script>
 </head>
 <body>
+	<script type="text/template" id="reportTemplate">
+		<table>
+			<col width="35%" />
+			<col />
+			<% _.each(report, function (item) { %>
+				<tr>
+					<% if (item.length > 1) { %>
+						<th><%= item[0] %></th>
+						<td><%= item[1] %></td>
+					<% } else { %>
+						<th class="category" colspan="2"><%= item[0] %></th>
+					<% } %>
+				</tr>
+			<% }); %>
+		</table>
+	</script>
+
+	<script type="text/template" id="webglSupportedTemplate">
+		<p>This browser supports WebGL!</p>
+	</script>
+
+	<script type="text/template" id="webglNotSupportedTemplate">
+		<p>This browser does not support WebGL.</p>
+		<p>
+			Check out <a href="http://get.webgl.org/">Get WebGL</a>,
+			or try installing the latest version of
+			<a href="http://www.mozilla.org/en-US/firefox/">Firefox</a>, or
+				<a href="http://www.google.com/chrome">Chrome</a>.
+		</p>
+	</script>
+
+	<a href="https://github.com/AnalyticalGraphicsInc/webglreport"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/bec6c51521dcc8148146135149fe06a9cc737577/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+
 	<a href="http://www.agi.com/"><img src="images/AGILogo3.jpg" alt="AGI"/></a>
+
 	<h1>WebGL Report</h1>
-	
-	<canvas id="testCanvas" style="border: none;" width="1" height="1"></canvas>
-	<div class="align-center">
-		<script type="text/javascript" src="webglreport.js"></script>
+
+	<div class="align-center" id="output">
 	</div>
-	
-	<!--Google Analytics-->
+
+	<p class="align-center">WebGL Report on <a href="https://github.com/AnalyticalGraphicsInc/webglreport">GitHub</a>.</p>
+
+	<!-- Google Analytics -->
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
 		_gaq.push(['_setAccount', 'UA-22539875-1']);
-		_gaq.push(['_trackPageview']);
+	  _gaq.push(['_trackPageview']);
 
 		(function() {
 			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

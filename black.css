@@ -1,64 +1,71 @@
 a:link {
-	color:#33CCFF; 
-	text-decoration: underline; 
+	color: #33CCFF;
+	text-decoration: underline;
 }
 
 a:hover {
-	color: #FFFFFF; 
-	text-decoration: underline; 
+	color: #FFFFFF;
+	text-decoration: underline;
 }
 a:visited {
 	color: #AFC7C7;
-	text-decoration: underline; 
+	text-decoration: underline;
+}
+
+a img {
+ border:none;
 }
 
 h1 {
 	color: white;
 	text-align: center;
-	font-family: arial; 
+	font-family: arial;
 	font-size: 26pt;
 }
 
 body {
 	font-family: arial;
 	color: white;
-	background-image: url(http://webglreport.sourceforge.net/images/mtimoon_fromSTK_3d.jpg);
+	background-image: url(images/mtimoon_fromSTK_3d.jpg);
 	background-position: right top;
 	background-repeat: no-repeat;
 	background-color: #000000;
 }
 
-div.align-center {
+.align-center {
 	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
 }
 
-img { 
-	display: block; 
-	margin-left: auto; 
+img {
+	display: block;
+	margin-left: auto;
 	margin-right: auto;
 	text-align: center;
-}
-
-div.ErrorMessage {
-	color: white;
 }
 
 table {
 	margin-left: auto;
 	margin-right: auto;
-	width: 600px;
+	width: 700px;
 	color: black;
 	font-size: 9pt;
 	text-align: left;
 	border-style: ridge;
 	border-width: 3px;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 5px;
-	padding-right: 5px;
+	padding: 5px;
 	border-color: #AFC7C7;
-	background-color: #FFFFFF
+	background-color: #FFFFFF;
 }
 
+th {
+    text-align: left;
+    font-weight: bold;
+}
+
+th.category {
+    padding-top: 1em;
+    text-decoration: underline;
+    font-size: 120%;
+}
