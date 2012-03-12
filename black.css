@@ -1,14 +1,5 @@
-a:link {
-	color: #33CCFF;
-	text-decoration: underline;
-}
-
-a:hover {
-	color: #FFFFFF;
-	text-decoration: underline;
-}
-a:visited {
-	color: #AFC7C7;
+a:link, a:hover, a:visited {
+	color: #218bb0;
 	text-decoration: underline;
 }
 
@@ -38,6 +29,10 @@ body {
 	text-align: center;
 }
 
+.logo {
+    float: right;
+}
+
 img {
 	display: block;
 	margin-left: auto;
@@ -45,7 +40,7 @@ img {
 	text-align: center;
 }
 
-table {
+table.report {
 	margin-left: auto;
 	margin-right: auto;
 	width: 700px;
@@ -54,18 +49,58 @@ table {
 	text-align: left;
 	border-style: ridge;
 	border-width: 3px;
-	padding: 5px;
+	padding: 6px;
 	border-color: #AFC7C7;
 	background-color: #FFFFFF;
 }
 
-th {
+td, th {
     text-align: left;
+    vertical-align: top;
+}
+
+th {
     font-weight: bold;
 }
 
-th.category {
-    padding-top: 1em;
-    text-decoration: underline;
-    font-size: 120%;
+.pipeline {
+    width: 600px;
+    height: 550px;
+    background-image: url(images/pipeline.png);
+    color: white;
+    position: relative;
+}
+
+.pipeline table {
+    width: 100%;
+}
+
+.pipeline .vertexShader, .pipeline .rasterizer, .pipeline .fragmentShader, .pipeline .framebuffer, .pipeline .textures {
+    position: absolute;
+    width: 245px;
+}
+
+.pipeline .vertexShader {
+    top: 33px;
+    left: 10px;
+}
+
+.pipeline .rasterizer {
+    top: 190px;
+    left: 10px;
+}
+
+.pipeline .fragmentShader {
+    top: 317px;
+    left: 10px;
+}
+
+.pipeline .framebuffer {
+    top: 444px;
+    left: 10px;
+}
+
+.pipeline .textures {
+    top: 219px;
+    left: 340px;
 }
