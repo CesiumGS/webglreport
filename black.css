@@ -1,57 +1,59 @@
 a:link, a:hover, a:visited {
-	color: #218bb0;
-	text-decoration: underline;
+    color: #218bb0;
+    text-decoration: underline;
 }
 
 a img {
- border:none;
+    border: none;
 }
 
 h1 {
-	color: white;
-	text-align: center;
-	font-family: arial;
-	font-size: 26pt;
+    color: white;
+    text-align: center;
+    font-family: arial;
+    font-size: 26pt;
 }
 
 body {
-	font-family: arial;
-	color: white;
-	background-image: url(images/mtimoon_fromSTK_3d.jpg);
-	background-position: right top;
-	background-repeat: no-repeat;
-	background-color: #000000;
+    font-family: arial;
+    color: white;
+    background-image: url(images/mtimoon_fromSTK_3d.jpg);
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-color: #000000;
 }
 
 .align-center {
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 .logo {
-    float: right;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
 }
 
 img {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
 table.report {
-	margin-left: auto;
-	margin-right: auto;
-	width: 700px;
-	color: black;
-	font-size: 9pt;
-	text-align: left;
-	border-style: ridge;
-	border-width: 3px;
-	padding: 6px;
-	border-color: #AFC7C7;
-	background-color: #FFFFFF;
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+    color: black;
+    font-size: 9pt;
+    text-align: left;
+    border-style: ridge;
+    border-width: 3px;
+    padding: 6px;
+    border-color: #AFC7C7;
+    background-color: #FFFFFF;
 }
 
 td, th {
