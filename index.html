@@ -24,26 +24,149 @@ THE SOFTWARE.
 <html>
 <head>
 	<title>WebGL Report</title>
-	<link rel="stylesheet" type="text/css" href="black.css" />
+	<link rel="stylesheet" type="text/css" href="black.css">
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
 	<script type="text/javascript" src="webglreport.js"></script>
 </head>
 <body>
 	<script type="text/template" id="reportTemplate">
-		<table>
+		<table class="report">
 			<col width="35%" />
 			<col />
-			<% _.each(report, function (item) { %>
+			<tr>
+				<th>Platform:</th>
+				<td><%= report.platform %></td>
+			</tr>
+			<tr>
+				<th>Browser User Agent:</th>
+				<td><%= report.userAgent %></td>
+			</tr>
+			<% if (typeof report.contextName !== 'undefined') { %>
+			<tr>
+				<th>Context Name:</th>
+				<td><%= report.contextName %></td>
+			</tr>
+			<tr>
+				<th>GL Version:</th>
+				<td><%= report.glVersion %></td>
+			</tr>
+			<tr>
+				<th>Shading Language Version:</th>
+				<td><%= report.shadingLanguageVersion %></td>
+			</tr>
+			<tr>
+				<th>Vendor:</th>
+				<td><%= report.vendor %></td>
+			</tr>
+			<tr>
+				<th>Renderer:</th>
+				<td><%= report.renderer %></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div class="pipeline">
+						<canvas class="background"></canvas>
+						<div class="vertexShader">
+							<h1>Vertex Shader</h1>
+							<table>
+								<tr title="Minimum: 8">
+									<th>Max Vertex Attributes:</th>
+									<td><%= report.maxVertexAttributes %></td>
+								</tr>
+								<tr title="Minimum: 128">
+									<th>Max Vertex Uniform Vectors:</th>
+									<td><%= report.maxVertexUniformVectors %></td>
+								</tr>
+								<tr title="Minimum: 0">
+									<th>Max Vertex Texture Image Units:</th>
+									<td><%= report.maxVertexTextureImageUnits %></td>
+								</tr>
+								<tr title="Minimum: 8">
+									<th>Max Varying Vectors:</th>
+									<td><%= report.maxVaryingVectors %></td>
+								</tr>
+							</table>
+						</div>
+						<div class="rasterizer">
+							<h1>Rasterizer</h1>
+							<table>
+								<tr>
+									<th>Aliased Line Width Range:</th>
+									<td><%= report.aliasedLineWidthRange %></td>
+								</tr>
+								<tr>
+									<th>Aliased Point Size Range:</th>
+									<td><%= report.aliasedPointSizeRange %></td>
+								</tr>
+							</table>
+						</div>
+						<div class="fragmentShader">
+							<h1>Fragment Shader</h1>
+							<table>
+								<tr title="Minimum: 16">
+									<th>Max Fragment Uniform Vectors:</th>
+									<td><%= report.maxFragmentUniformVectors %></td>
+								</tr>
+								<tr title="Minimum: 8">
+									<th>Max Texture Image Units:</th>
+									<td><%= report.maxTextureImageUnits %></td>
+								</tr>
+							</table>
+						</div>
+						<div class="framebuffer">
+							<h1>Framebuffer</h1>
+							<table>
+								<tr>
+									<th>RGBA Bits:</th>
+									<td>[<%= report.redBits %>, <%= report.greenBits %>, <%= report.blueBits %>, <%= report.alphaBits %>]</td>
+								</tr>
+								<tr>
+									<th>Depth / Stencil Bits:</th>
+									<td>[<%= report.depthBits %>, <%= report.stencilBits %>]</td>
+								</tr>
+								<tr>
+									<th>Max Render Buffer Size:</th>
+									<td><%= report.maxRenderBufferSize %></td>
+								</tr>
+								<tr>
+									<th>Max Viewport Dimensions:</th>
+									<td><%= report.maxViewportDimensions %></td>
+								</tr>
+							</table>
+						</div>
+						<div class="textures">
+							<h1>Textures</h1>
+							<table>
+								<tr title="Minimum: 64">
+									<th>Max Texture Size:</th>
+									<td><%= report.maxTextureSize %></td>
+								</tr>
+								<tr title="Minimum: 16">
+									<th>Max Cube Map Texture Size:</th>
+									<td><%= report.maxCubeMapTextureSize %></td>
+								</tr>
+								<tr title="Minimum: 8">
+									<th>Max Combined Texture Image Units:</th>
+									<td><%= report.maxCombinedTextureImageUnits %></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th colspan="2">Supported Extensions:</th>
+			</tr>
+			<% _.each(report.extensions, function(e) { %>
 				<tr>
-					<% if (item.length > 1) { %>
-						<th><%= item[0] %></th>
-						<td><%= item[1] %></td>
-					<% } else { %>
-						<th class="category" colspan="2"><%= item[0] %></th>
-					<% } %>
+					<td></td>
+					<td>
+						<a href="<%= getExtensionUrl(e) %>"><%= e %></a>
+					</td>
 				</tr>
-			<% }); %>
+			<% }) %>
+			<% } %>
 		</table>
 	</script>
 
@@ -63,14 +186,14 @@ THE SOFTWARE.
 
 	<a href="https://github.com/AnalyticalGraphicsInc/webglreport"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/bec6c51521dcc8148146135149fe06a9cc737577/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
 
-	<a href="http://www.agi.com/"><img src="images/AGILogo3.jpg" alt="AGI"/></a>
-
 	<h1>WebGL Report</h1>
 
 	<div class="align-center" id="output">
 	</div>
 
-	<p class="align-center">WebGL Report on <a href="https://github.com/AnalyticalGraphicsInc/webglreport">GitHub</a>.</p>
+	<div class="logo">
+		<a href="http://www.agi.com/"><img src="images/AGILogo3.jpg" alt="AGI"/></a>
+	</div>
 
 	<!-- Google Analytics -->
 	<script type="text/javascript">

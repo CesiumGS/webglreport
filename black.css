@@ -1,71 +1,113 @@
-a:link {
-	color: #33CCFF;
-	text-decoration: underline;
-}
-
-a:hover {
-	color: #FFFFFF;
-	text-decoration: underline;
-}
-a:visited {
-	color: #AFC7C7;
-	text-decoration: underline;
+a:link, a:hover, a:visited {
+    color: #218bb0;
+    text-decoration: underline;
 }
 
 a img {
- border:none;
+    border: none;
 }
 
 h1 {
-	color: white;
-	text-align: center;
-	font-family: arial;
-	font-size: 26pt;
+    color: white;
+    text-align: center;
+    font-family: arial;
+    font-size: 26pt;
 }
 
 body {
-	font-family: arial;
-	color: white;
-	background-image: url(images/mtimoon_fromSTK_3d.jpg);
-	background-position: right top;
-	background-repeat: no-repeat;
-	background-color: #000000;
+    font-family: arial;
+    color: white;
+    background-image: url(images/mtimoon_fromSTK_3d.jpg);
+    background-position: right top;
+    background-repeat: no-repeat;
+    background-color: black;
+    margin: 0px;
 }
 
 .align-center {
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.logo {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
 }
 
 img {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
 }
 
-table {
-	margin-left: auto;
-	margin-right: auto;
-	width: 700px;
-	color: black;
-	font-size: 9pt;
-	text-align: left;
-	border-style: ridge;
-	border-width: 3px;
-	padding: 5px;
-	border-color: #AFC7C7;
-	background-color: #FFFFFF;
+table.report {
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+    color: black;
+    font-size: 9pt;
+    text-align: left;
+    border-style: ridge;
+    border-width: 3px;
+    padding: 6px;
+    border-color: #AFC7C7;
+    background-color: #FFFFFF;
+}
+
+td, th {
+    text-align: left;
+    vertical-align: top;
 }
 
 th {
-    text-align: left;
     font-weight: bold;
 }
 
-th.category {
-    padding-top: 1em;
-    text-decoration: underline;
-    font-size: 120%;
+.pipeline {
+    width: 600px;
+    height: 530px;
+    color: white;
+    position: relative;
+}
+
+.pipeline table {
+    width: 100%;
+}
+
+.pipeline .vertexShader, .pipeline .rasterizer, .pipeline .fragmentShader, .pipeline .framebuffer, .pipeline .textures {
+    position: absolute;
+    width: 245px;
+}
+
+.pipeline h1 {
+    font-size: 2em;
+    margin: 0px;
+}
+
+.pipeline .vertexShader {
+    top: 10px;
+    left: 5px;
+}
+
+.pipeline .rasterizer {
+    top: 170px;
+    left: 5px;
+}
+
+.pipeline .fragmentShader {
+    top: 290px;
+    left: 5px;
+}
+
+.pipeline .framebuffer {
+    top: 410px;
+    left: 5px;
+}
+
+.pipeline .textures {
+    top: 200px;
+    left: 330px;
 }
