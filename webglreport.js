@@ -88,15 +88,15 @@ $(function() {
         depthBits: gl.getParameter(gl.DEPTH_BITS),
         stencilBits: gl.getParameter(gl.STENCIL_BITS),
         maxRenderBufferSize: gl.getParameter(gl.MAX_RENDERBUFFER_SIZE),
-        maxCombinedTextureImageUnits: gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS), // min: 8
-        maxCubeMapTextureSize: gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE), // min: 16
-        maxFragmentUniformVectors: gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS), // min: 16
-        maxTextureImageUnits: gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS), // min: 8
-        maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE), // min: 64
-        maxVaryingVectors: gl.getParameter(gl.MAX_VARYING_VECTORS), // min: 8
-        maxVertexAttributes: gl.getParameter(gl.MAX_VERTEX_ATTRIBS), // min: 8
-        maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) || 0, // min: 0
-        maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS), // min: 128
+        maxCombinedTextureImageUnits: gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS),
+        maxCubeMapTextureSize: gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE),
+        maxFragmentUniformVectors: gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS),
+        maxTextureImageUnits: gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS),
+        maxTextureSize: gl.getParameter(gl.MAX_TEXTURE_SIZE),
+        maxVaryingVectors: gl.getParameter(gl.MAX_VARYING_VECTORS),
+        maxVertexAttributes: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
+        maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS),
+        maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
         aliasedLineWidthRange: describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE)), // must include the value 1
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)), // must include the value 1
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),

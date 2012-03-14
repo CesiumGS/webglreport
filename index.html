@@ -70,19 +70,19 @@ THE SOFTWARE.
 						<div class="vertexShader">
 							<h1>Vertex Shader</h1>
 							<table>
-								<tr>
+								<tr title="Minimum: 8">
 									<th>Max Vertex Attributes:</th>
 									<td><%= report.maxVertexAttributes %></td>
 								</tr>
-								<tr>
+								<tr title="Minimum: 128">
 									<th>Max Vertex Uniform Vectors:</th>
 									<td><%= report.maxVertexUniformVectors %></td>
 								</tr>
-								<tr>
+								<tr title="Minimum: 0">
 									<th>Max Vertex Texture Image Units:</th>
 									<td><%= report.maxVertexTextureImageUnits %></td>
 								</tr>
-								<tr>
+								<tr title="Minimum: 8">
 									<th>Max Varying Vectors:</th>
 									<td><%= report.maxVaryingVectors %></td>
 								</tr>
@@ -104,11 +104,11 @@ THE SOFTWARE.
 						<div class="fragmentShader">
 							<h1>Fragment Shader</h1>
 							<table>
-								<tr>
+								<tr title="Minimum: 16">
 									<th>Max Fragment Uniform Vectors:</th>
 									<td><%= report.maxFragmentUniformVectors %></td>
 								</tr>
-								<tr>
+								<tr title="Minimum: 8">
 									<th>Max Texture Image Units:</th>
 									<td><%= report.maxTextureImageUnits %></td>
 								</tr>
@@ -138,15 +138,15 @@ THE SOFTWARE.
 						<div class="textures">
 							<h1>Textures</h1>
 							<table>
-								<tr>
+								<tr title="Minimum: 64">
 									<th>Max Texture Size:</th>
 									<td><%= report.maxTextureSize %></td>
 								</tr>
-								<tr>
+								<tr title="Minimum: 16">
 									<th>Max Cube Map Texture Size:</th>
 									<td><%= report.maxCubeMapTextureSize %></td>
 								</tr>
-								<tr>
+								<tr title="Minimum: 8">
 									<th>Max Combined Texture Image Units:</th>
 									<td><%= report.maxCombinedTextureImageUnits %></td>
 								</tr>
