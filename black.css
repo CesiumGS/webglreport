@@ -20,7 +20,8 @@ body {
     background-image: url(images/mtimoon_fromSTK_3d.jpg);
     background-position: right top;
     background-repeat: no-repeat;
-    background-color: #000000;
+    background-color: black;
+    margin: 0px;
 }
 
 .align-center {
@@ -30,9 +31,9 @@ body {
 }
 
 .logo {
-    position: fixed;
-    bottom: 0px;
+    position: absolute;
     right: 0px;
+    bottom: 0px;
 }
 
 img {

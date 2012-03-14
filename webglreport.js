@@ -27,20 +27,23 @@ THE SOFTWARE.
 $(function() {
     "use strict";
 
-    var canvas = $("<canvas />", { width: "1", height: "1" }).appendTo("body")[0],
+    var canvas = $("<canvas />", { width: "1", height: "1" }).appendTo("body"),
         gl,
         contextName = _.find(["webgl", "experimental-webgl"], function(name) {
             try {
-                gl = canvas.getContext(name, { stencil: true });
+                gl = canvas[0].getContext(name, { stencil: true });
                 return !!gl;
-            } catch (e) {}
-            return false;
+            } catch (e) {
+                return false;
+            }
         }),
         template = _.template($("#reportTemplate").html()),
         report = {
             platform: navigator.platform,
             userAgent: navigator.userAgent
         };
+
+    canvas.remove();
 
     function getExtensionUrl(extension) {
         //special cases
@@ -109,8 +112,8 @@ $(function() {
     background.height = pipeline.height();
 
     var context = background.getContext("2d");
-    context.shadowOffsetX = 2;
-    context.shadowOffsetY = 2;
+    context.shadowOffsetX = 4;
+    context.shadowOffsetY = 4;
     context.shadowBlur = 10;
     context.shadowColor = "black";
     context.strokeStyle = "black";
