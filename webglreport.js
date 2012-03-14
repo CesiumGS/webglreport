@@ -111,11 +111,13 @@ $(function() {
     background.width = pipeline.width();
     background.height = pipeline.height();
 
+	var hasVertexTextureUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) > 0;
+
     var context = background.getContext("2d");
-    context.shadowOffsetX = 4;
-    context.shadowOffsetY = 4;
-    context.shadowBlur = 10;
-    context.shadowColor = "black";
+    context.shadowOffsetX = 3;
+    context.shadowOffsetY = 3;
+    context.shadowBlur = 7;
+    context.shadowColor = "rgba(0, 0, 0, 0.5)";
     context.strokeStyle = "black";
 
     var boxPadding = 4;
@@ -147,40 +149,6 @@ $(function() {
         return { x: x, y: y, width: width, height: height };
     }
 
-    var vertexShaderBox = drawBox($(".vertexShader"), "#ff6700"),
-        rasterizerBox = drawBox($(".rasterizer"), "#3130cb"),
-        fragmentShaderBox = drawBox($(".fragmentShader"), "#ff6700"),
-        framebufferBox = drawBox($(".framebuffer"), "#7c177e"),
-        texturesBox = drawBox($(".textures"), "#3130cb");
-
-    context.lineWidth = 10;
-    context.fillStyle = "black";
-    context.strokeStyle = "black";
-    context.beginPath();
-
-    var arrowRightX = texturesBox.x,
-        arrowRightY = texturesBox.y + (texturesBox.height / 2),
-        arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2,
-        arrowMidY = arrowRightY,
-        arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2),
-        arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height / 2),
-        arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15,
-        arrowTopLeftY = arrowTopMidY,
-        arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15,
-        arrowBottomLeftY = arrowBottomMidY;
-
-    context.moveTo(arrowRightX, arrowRightY);
-
-    context.lineTo(arrowMidX, arrowMidY);
-    context.lineTo(arrowMidX, arrowTopMidY);
-    context.lineTo(arrowTopLeftX, arrowTopMidY);
-
-    context.moveTo(arrowMidX, arrowMidY);
-    context.lineTo(arrowMidX, arrowBottomMidY);
-    context.lineTo(arrowBottomLeftX, arrowBottomLeftY);
-
-    context.stroke();
-
     function drawLeftHead(x, y) {
         context.beginPath();
         context.moveTo(x + 5, y + 15);
@@ -189,9 +157,6 @@ $(function() {
         context.quadraticCurveTo(x, y, x + 5, y + 15);
         context.fill();
     }
-
-    drawLeftHead(arrowTopLeftX, arrowTopLeftY);
-    drawLeftHead(arrowBottomLeftX, arrowBottomLeftY);
 
     function drawDownHead(x, y) {
         context.beginPath();
@@ -215,6 +180,64 @@ $(function() {
 
         drawDownHead(arrowBottomX, arrowBottomY);
     }
+
+    var vertexShaderBox = drawBox($(".vertexShader"), "#ff6700"),
+        rasterizerBox = drawBox($(".rasterizer"), "#3130cb"),
+        fragmentShaderBox = drawBox($(".fragmentShader"), "#ff6700"),
+        framebufferBox = drawBox($(".framebuffer"), "#7c177e"),
+        texturesBox = drawBox($(".textures"), "#3130cb");
+
+    var arrowRightX = texturesBox.x,
+        arrowRightY = texturesBox.y + (texturesBox.height / 2),
+        arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2,
+        arrowMidY = arrowRightY,
+        arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2),
+        arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height / 2),
+        arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15,
+        arrowTopLeftY = arrowTopMidY,
+        arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15,
+        arrowBottomLeftY = arrowBottomMidY;
+
+	if (hasVertexTextureUnits) {
+	    context.fillStyle = context.strokeStyle = "black";
+	    context.lineWidth = 10;
+	} else {
+		context.fillStyle = context.strokeStyle = "#FFF";
+	    context.shadowColor = "#000";
+		context.shadowOffsetX = context.shadowOffsetY = 0;
+	    context.lineWidth = 8;
+	}
+
+	context.beginPath();
+	context.moveTo(arrowMidX, arrowMidY);
+	context.lineTo(arrowMidX, arrowTopMidY);
+	if (hasVertexTextureUnits) {
+		context.lineTo(arrowTopLeftX, arrowTopMidY);
+		context.stroke();
+		drawLeftHead(arrowTopLeftX, arrowTopLeftY);
+	} else {
+		context.stroke();
+	    context.shadowColor = "#000";
+		context.font = "bold 14pt arial, Sans-Serif";
+		context.fillText("No vertex textures available.", arrowMidX - 8, arrowTopMidY - 8);
+	}
+
+    context.lineWidth = 10;
+    context.fillStyle = context.strokeStyle = "black";
+    context.shadowColor = "rgba(0, 0, 0, 0.5)";
+	context.shadowOffsetX = context.shadowOffsetY = 3;
+    context.beginPath();
+
+    context.moveTo(arrowRightX, arrowRightY);
+
+    context.lineTo(arrowMidX - context.lineWidth * 0.5, arrowMidY);
+	context.moveTo(arrowMidX, arrowMidY);
+    context.lineTo(arrowMidX, arrowBottomMidY);
+    context.lineTo(arrowBottomLeftX, arrowBottomLeftY);
+
+    context.stroke();
+
+    drawLeftHead(arrowBottomLeftX, arrowBottomLeftY);
 
     drawDownArrow(vertexShaderBox, rasterizerBox);
     drawDownArrow(rasterizerBox, fragmentShaderBox);

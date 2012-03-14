@@ -10,12 +10,12 @@ a img {
 h1 {
     color: white;
     text-align: center;
-    font-family: arial;
+    font-family: arial, Sans-Serif;
     font-size: 26pt;
 }
 
 body {
-    font-family: arial;
+    font-family: arial, Sans-Serif;
     color: white;
     background-image: url(images/mtimoon_fromSTK_3d.jpg);
     background-position: right top;
