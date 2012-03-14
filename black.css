@@ -67,8 +67,7 @@ th {
 
 .pipeline {
     width: 600px;
-    height: 550px;
-    background-image: url(images/pipeline.png);
+    height: 530px;
     color: white;
     position: relative;
 }
@@ -82,27 +81,32 @@ th {
     width: 245px;
 }
 
+.pipeline h1 {
+    font-size: 2em;
+    margin: 0px;
+}
+
 .pipeline .vertexShader {
-    top: 33px;
-    left: 10px;
+    top: 10px;
+    left: 5px;
 }
 
 .pipeline .rasterizer {
-    top: 190px;
-    left: 10px;
+    top: 170px;
+    left: 5px;
 }
 
 .pipeline .fragmentShader {
-    top: 317px;
-    left: 10px;
+    top: 290px;
+    left: 5px;
 }
 
 .pipeline .framebuffer {
-    top: 444px;
-    left: 10px;
+    top: 410px;
+    left: 5px;
 }
 
 .pipeline .textures {
-    top: 219px;
-    left: 340px;
+    top: 200px;
+    left: 330px;
 }
