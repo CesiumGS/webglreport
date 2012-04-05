@@ -30,13 +30,6 @@ body {
     text-align: center;
 }
 
-.logo {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    z-index: -1;
-}
-
 img {
     display: block;
     margin-left: auto;
