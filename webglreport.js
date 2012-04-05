@@ -1,5 +1,5 @@
 /**
-Copyright (c) 2012 Contributors.
+Copyright (c) 2011-2012 Contributors.
 
 The MIT License
 
