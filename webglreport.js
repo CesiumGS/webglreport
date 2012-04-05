@@ -1,5 +1,5 @@
 /**
-Copyright (c) 2011 Analytical Graphics, Inc.
+Copyright (c) 2012 Contributors.
 
 The MIT License
 
