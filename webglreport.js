@@ -102,6 +102,10 @@ $(function() {
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         extensions: gl.getSupportedExtensions()
     });
+	
+	report = _.extend(report, {
+		angle: (report.platform === "Win32" && report.aliasedLineWidthRange === describeRange([1,1]))
+	});
 
     renderReport($("#webglSupportedTemplate").html());
 
