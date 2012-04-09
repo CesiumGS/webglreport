@@ -48,10 +48,6 @@ THE SOFTWARE.
 				<td><%= report.contextName %></td>
 			</tr>
 			<tr>
-				<th>ANGLE:</th>
-				<td><%= report.angle %></td>
-			</tr>
-			<tr>
 				<th>GL Version:</th>
 				<td><%= report.glVersion %></td>
 			</tr>
@@ -66,6 +62,10 @@ THE SOFTWARE.
 			<tr>
 				<th>Renderer:</th>
 				<td><%= report.renderer %></td>
+			</tr>
+			<tr>
+				<th>ANGLE:</th>
+				<td><%= report.angle %></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -154,6 +154,12 @@ THE SOFTWARE.
 									<th>Max Combined Texture Image Units:</th>
 									<td><%= report.maxCombinedTextureImageUnits %></td>
 								</tr>
+								<% if (report.maxAnisotropy) { %>
+								<tr title="Minimum: 2">
+									<th>Max Anisotropy:</th>
+									<td><%= report.maxAnisotropy %></td>
+								</tr>
+								<% } %>
 							</table>
 						</div>
 					</div>
