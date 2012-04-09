@@ -74,23 +74,23 @@ $(function() {
     function describeRange(value) {
         return "[" + value[0] + ", " + value[1] + "]";
     }
-
-	function getMaxAnisotropy() {
-		var e = gl.getExtension("EXT_texture_filter_anisotropic")
-				|| gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
-				|| gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
-
-		if(e) {
-			var max = gl.getParameter(e.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-			// See Canary bug: http://code.google.com/p/chromium/issues/detail?id=117450
-			if (max === 0) {
-				max = 2;
-			}
-			return max;
-		}
-		return null;
-	}
-
+    
+    function getMaxAnisotropy() {
+        var e = gl.getExtension("EXT_texture_filter_anisotropic")
+                || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
+                || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+                
+        if(e) {
+            var max = gl.getParameter(e.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+            // See Canary bug: http://code.google.com/p/chromium/issues/detail?id=117450
+            if (max === 0) {
+                max = 2;
+            }
+            return max;
+        }
+        return null;
+    }
+    
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -116,10 +116,10 @@ $(function() {
         aliasedLineWidthRange: describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE)),
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
-		maxAnisotropy: getMaxAnisotropy(),
+        maxAnisotropy: getMaxAnisotropy(),
         extensions: gl.getSupportedExtensions()
     });
-	
+    
 	report = _.extend(report, {
 		angle: (report.platform === "Win32" && report.aliasedLineWidthRange === describeRange([1,1]))
 	});
