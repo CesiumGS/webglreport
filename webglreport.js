@@ -120,11 +120,17 @@ $(function() {
         extensions: gl.getSupportedExtensions()
     });
     
-	report = _.extend(report, {
-		angle: (report.platform === "Win32" && report.aliasedLineWidthRange === describeRange([1,1]))
-	});
+    report = _.extend(report, {
+        angle: (report.platform === "Win32" && report.aliasedLineWidthRange === describeRange([1,1]))
+    });
 
-    renderReport($("#webglSupportedTemplate").html());
+    if (window.externalHost) {
+        // Tab is running with Chrome Frame
+        renderReport($("#webglSupportedChromeFrameTemplate").html());
+    }
+    else {
+        renderReport($("#webglSupportedTemplate").html());
+    }
 
     var pipeline = $(".pipeline"),
         background = $(".background")[0];
@@ -132,7 +138,7 @@ $(function() {
     background.width = pipeline.width();
     background.height = pipeline.height();
 
-	var hasVertexTextureUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) > 0;
+    var hasVertexTextureUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) > 0;
 
     var context = background.getContext("2d");
     context.shadowOffsetX = 3;
