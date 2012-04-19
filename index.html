@@ -24,6 +24,7 @@ THE SOFTWARE.
 <html>
 <head>
 	<title>WebGL Report</title>
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
 	<link rel="stylesheet" type="text/css" href="black.css">
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.3.1/underscore-min.js"></script>
@@ -182,7 +183,11 @@ THE SOFTWARE.
 	</script>
 
 	<script type="text/template" id="webglSupportedTemplate">
-		<p>This browser supports WebGL!</p>
+		<p>This browser supports WebGL.</p>
+	</script>
+
+	<script type="text/template" id="webglSupportedChromeFrameTemplate">
+		<p>This browser supports WebGL with Chrome Frame.</p>
 	</script>
 
 	<script type="text/template" id="webglNotSupportedTemplate">
@@ -190,8 +195,8 @@ THE SOFTWARE.
 		<p>
 			Check out <a href="http://get.webgl.org/">Get WebGL</a>,
 			or try installing the latest version of
-			<a href="http://www.mozilla.org/en-US/firefox/">Firefox</a>, or
-				<a href="http://www.google.com/chrome">Chrome</a>.
+			<a href="http://www.google.com/chrome">Chrome</a>, or
+				<a href="http://www.mozilla.org/en-US/firefox/">Firefox</a>.
 		</p>
 	</script>
 
