@@ -90,7 +90,7 @@ $(function() {
         }
         return null;
     }
-        
+
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
