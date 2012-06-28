@@ -90,7 +90,7 @@ $(function() {
         }
         return null;
     }
-    
+        
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -117,6 +117,7 @@ $(function() {
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
+        antialias:  gl.getContextAttributes().antialias,
         extensions: gl.getSupportedExtensions()
     });
     
