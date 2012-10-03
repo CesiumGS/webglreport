@@ -54,6 +54,7 @@ $(function() {
             extension = "";
         }
         extension = extension.replace(/^WEBKIT_/, "");
+        extension = extension.replace(/^MOZ_/, "");
         extension = extension.replace(/_EXT_/, "_");
 
         return "http://www.khronos.org/registry/webgl/extensions/" + extension;
@@ -74,13 +75,13 @@ $(function() {
     function describeRange(value) {
         return "[" + value[0] + ", " + value[1] + "]";
     }
-    
+
     function getMaxAnisotropy() {
         var e = gl.getExtension("EXT_texture_filter_anisotropic")
                 || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
                 || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
-                
-        if(e) {
+
+        if (e) {
             var max = gl.getParameter(e.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
             // See Canary bug: http://code.google.com/p/chromium/issues/detail?id=117450
             if (max === 0) {
@@ -90,7 +91,7 @@ $(function() {
         }
         return null;
     }
-    
+
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -119,7 +120,7 @@ $(function() {
         maxAnisotropy: getMaxAnisotropy(),
         extensions: gl.getSupportedExtensions()
     });
-    
+
     report = _.extend(report, {
         angle: (report.platform === "Win32" && report.aliasedLineWidthRange === describeRange([1,1]))
     });
