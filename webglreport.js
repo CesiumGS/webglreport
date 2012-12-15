@@ -92,12 +92,16 @@ $(function() {
         return null;
     }
 
+	var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
+	
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
         shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
         vendor: gl.getParameter(gl.VENDOR),
         renderer: gl.getParameter(gl.RENDERER),
+        antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
+        angle: (navigator.platform === "Win32") && (lineWidthRange === describeRange([1,1])),
         redBits: gl.getParameter(gl.RED_BITS),
         greenBits: gl.getParameter(gl.GREEN_BITS),
         blueBits: gl.getParameter(gl.BLUE_BITS),
@@ -114,15 +118,11 @@ $(function() {
         maxVertexAttributes: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
         maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS),
         maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
-        aliasedLineWidthRange: describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE)),
+        aliasedLineWidthRange: lineWidthRange,
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
         extensions: gl.getSupportedExtensions()
-    });
-
-    report = _.extend(report, {
-        angle: (report.platform === "Win32" && report.aliasedLineWidthRange === describeRange([1,1]))
     });
 
     if (window.externalHost) {
