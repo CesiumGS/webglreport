@@ -66,6 +66,10 @@ THE SOFTWARE.
 				<td><%= report.renderer %></td>
 			</tr>
 			<tr>
+				<th>Antialiasing:</th>
+				<td><%= report.antialias %></td>
+			</tr>			
+			<tr>
 				<th>ANGLE:</th>
 				<td><%= report.angle %></td>
 			</tr>
@@ -97,10 +101,6 @@ THE SOFTWARE.
 						<div class="rasterizer">
 							<h1>Rasterizer</h1>
 							<table>
-                                <tr title="Antialiasing">
-                                    <th>Antialiasing:</th>
-                                    <td><%= report.antialias %></td>
-                                </tr>
 								<tr title="Minimum: [1, 1]">
 									<th>Aliased Line Width Range:</th>
 									<td><%= report.aliasedLineWidthRange %></td>
