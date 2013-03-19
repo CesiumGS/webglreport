@@ -62,7 +62,7 @@ th {
 
 .pipeline {
     width: 600px;
-    height: 530px;
+    height: 640px;
     color: white;
     position: relative;
 }
@@ -87,17 +87,17 @@ th {
 }
 
 .pipeline .rasterizer {
-    top: 160px;
+    top: 220px;
     left: 5px;
 }
 
 .pipeline .fragmentShader {
-    top: 290px;
+    top: 350px;
     left: 5px;
 }
 
 .pipeline .framebuffer {
-    top: 410px;
+    top: 520px;
     left: 5px;
 }
 

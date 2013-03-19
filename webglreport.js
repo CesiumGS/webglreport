@@ -91,6 +91,10 @@ $(function() {
         }
         return null;
     }
+	
+	function describePrecision(precision) {
+		return precision.rangeMin + ' ' + precision.rangeMax + ' ' + precision.precision;
+	}
 
 	var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
 	
@@ -122,7 +126,9 @@ $(function() {
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
-        extensions: gl.getSupportedExtensions()
+        extensions: gl.getSupportedExtensions(),
+		fragmentShaderHighPrecision: describePrecision(gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)),
+		vertexShaderHighPrecision: describePrecision(gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT))
     });
 
     if (window.externalHost) {
