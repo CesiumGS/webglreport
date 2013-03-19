@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <!--
-Copyright (c) 2011-2012 Contributors.
+Copyright (c) 2011-2013 Contributors.
 
 The MIT License
 
@@ -96,6 +96,10 @@ THE SOFTWARE.
 									<th>Max Varying Vectors:</th>
 									<td><%= report.maxVaryingVectors %></td>
 								</tr>
+								<tr>
+									<th>Best float precision:</th>
+									<td><%= report.vertexShaderPrecision %></td>
+								</tr>
 							</table>
 						</div>
 						<div class="rasterizer">
@@ -121,6 +125,10 @@ THE SOFTWARE.
 								<tr title="Minimum: 8">
 									<th>Max Texture Image Units:</th>
 									<td><%= report.maxTextureImageUnits %></td>
+								</tr>
+								<tr>
+									<th>Best float precision:</th>
+									<td><%= report.fragmentShaderPrecision %></td>
 								</tr>
 							</table>
 						</div>
