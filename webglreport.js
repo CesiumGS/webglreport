@@ -91,9 +91,32 @@ $(function() {
         }
         return null;
     }
-	
-	function describePrecision(precision) {
-		return precision.rangeMin + ' ' + precision.rangeMax + ' ' + precision.precision;
+
+    function formatPower(exponent, verbose) {
+        if (verbose) {
+            return '' + Math.pow(2, exponent);
+        } else {
+            return '2<sup>' + exponent + '</sup>';
+        }
+    }
+
+    function getPrecisionDescription(precision, verbose) {
+        var verbosePart = verbose ? ' bit mantissa' : '';
+        return '[-' + formatPower(precision.rangeMin, verbose) + ', ' + formatPower(precision.rangeMax, verbose) + '] (' + precision.precision + verbosePart + ')'
+    }
+
+	function describePrecision(shaderType) {
+        var high = gl.getShaderPrecisionFormat(shaderType, gl.HIGH_FLOAT);
+        var medium = gl.getShaderPrecisionFormat(shaderType, gl.MEDIUM_FLOAT);
+        var low = gl.getShaderPrecisionFormat(shaderType, gl.LOW_FLOAT);
+
+        var best = high;
+        if (high.precision === 0) {
+            best = medium;
+        }
+
+        return '<span title="High: ' + getPrecisionDescription(high, true) + ' Medium: ' + getPrecisionDescription(medium, true) + ' Low: ' + getPrecisionDescription(low, true) + '">' +
+               getPrecisionDescription(best, false) + '</span>';
 	}
 
 	var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
@@ -127,8 +150,8 @@ $(function() {
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
         extensions: gl.getSupportedExtensions(),
-		fragmentShaderHighPrecision: describePrecision(gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)),
-		vertexShaderHighPrecision: describePrecision(gl.getShaderPrecisionFormat(gl.VERTEX_SHADER, gl.HIGH_FLOAT))
+        fragmentShaderPrecision: describePrecision(gl.FRAGMENT_SHADER),
+        vertexShaderPrecision: describePrecision(gl.VERTEX_SHADER)
     });
 
     if (window.externalHost) {
