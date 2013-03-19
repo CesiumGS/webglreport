@@ -1,5 +1,5 @@
 /**
-Copyright (c) 2011-2012 Contributors.
+Copyright (c) 2011-2013 Contributors.
 
 The MIT License
 
@@ -115,7 +115,7 @@ $(function() {
             best = medium;
         }
 
-        return '<span title="High: ' + getPrecisionDescription(high, true) + ' Medium: ' + getPrecisionDescription(medium, true) + ' Low: ' + getPrecisionDescription(low, true) + '">' +
+        return '<span title="High: ' + getPrecisionDescription(high, true) + '\n\nMedium: ' + getPrecisionDescription(medium, true) + '\n\nLow: ' + getPrecisionDescription(low, true) + '">' +
                getPrecisionDescription(best, false) + '</span>';
 	}
 
