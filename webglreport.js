@@ -122,6 +122,33 @@ $(function() {
             getPrecisionDescription(best, false) + '</span>';
 	}
 
+	function isPowerOfTwo(n) {
+        return (n !== 0) && ((n & (n - 1)) === 0);
+    }
+
+	function getAngle(gl) {
+		var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
+
+		// Heuristic: ANGLE is only on Windows and does not implement line width greater than one.
+		var angle = (navigator.platform === 'Win32') && (lineWidthRange === describeRange([1,1]));
+
+		if (angle) {
+			// Heuristic: D3D11 backend does not appear to reserve uniforms like the D3D9 backend, e.g.,
+			// D3D11 may have 1024 uniforms per stage, but D3D9 has 254 and 221.
+			//
+			// We could also test for WEBGL_draw_buffers, but many systems do not have it yet
+			// due to driver bugs, etc.
+			if (isPowerOfTwo(gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)) &&
+                isPowerOfTwo(gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS))) {
+				return 'Yes, D3D11';
+			} else {
+				return 'Yes, D3D9';
+			}
+		}
+
+		return 'No';
+	}
+
 	function getMajorPerformanceCaveat(contextName) {
 		// Does context creation fail to do a major performance caveat?
 	    var canvas = $('<canvas />', { width : '1', height : '1' }).appendTo('body');
@@ -142,8 +169,6 @@ $(function() {
 	    return 'No';
 	}
 
-	var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
-	
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -151,7 +176,7 @@ $(function() {
         vendor: gl.getParameter(gl.VENDOR),
         renderer: gl.getParameter(gl.RENDERER),
         antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
-        angle: (navigator.platform === 'Win32') && (lineWidthRange === describeRange([1,1])),
+        angle: getAngle(gl),
         majorPerformanceCaveat: getMajorPerformanceCaveat(contextName),
         redBits: gl.getParameter(gl.RED_BITS),
         greenBits: gl.getParameter(gl.GREEN_BITS),
@@ -169,7 +194,7 @@ $(function() {
         maxVertexAttributes: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
         maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS),
         maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
-        aliasedLineWidthRange: lineWidthRange,
+        aliasedLineWidthRange: describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE)),
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
