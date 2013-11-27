@@ -27,23 +27,31 @@ THE SOFTWARE.
 $(function() {
     "use strict";
 
-    var canvas = $("<canvas />", { width: "1", height: "1" }).appendTo("body"),
-        gl,
-        contextName = _.find(["webgl", "experimental-webgl"], function(name) {
-            try {
-                gl = canvas[0].getContext(name, { stencil: true });
-                return !!gl;
-            } catch (e) {
-                return false;
-            }
-        }),
-        template = _.template($("#reportTemplate").html()),
-        report = {
-            platform: navigator.platform,
-            userAgent: navigator.userAgent
-        };
+    if (!window.WebGLRenderingContext) {
+        // The browser does not support WebGL
+        renderReport($("#webglNotSupportedTemplate").html());
+        return;
+    }
 
+    var canvas = $("<canvas />", { width: "1", height: "1" }).appendTo("body");
+    var gl;
+    var contextName = _.find(["webgl", "experimental-webgl"], function(name) {
+        gl = canvas[0].getContext(name, { stencil: true });
+        return !!gl;
+    });
     canvas.remove();
+
+    if (!gl) {
+        // The browser supports WebGL, but initialization failed
+        renderReport($("#webglNotSupportedTemplate").html());
+        return;
+    }
+
+    var template = _.template($("#reportTemplate").html());
+    var report = {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent
+    };
 
     function getExtensionUrl(extension) {
         //special cases
@@ -65,11 +73,6 @@ $(function() {
             report: report,
             getExtensionUrl: getExtensionUrl
         }));
-    }
-
-    if (!gl) {
-        renderReport($("#webglNotSupportedTemplate").html());
-        return;
     }
 
     function describeRange(value) {
@@ -119,6 +122,26 @@ $(function() {
                getPrecisionDescription(best, false) + '</span>';
 	}
 
+	function getMajorPerformanceCaveat(contextName) {
+		// Does context creation fail to do a major performance caveat?
+	    var canvas = $("<canvas />", { width : "1", height : "1" }).appendTo("body");
+	    var gl = canvas[0].getContext(contextName, { failIfMajorPerformanceCaveat : true });
+	    canvas.remove();
+
+	    if (!gl) {
+            // Our original context creation passed.  This did not.
+            return 'Yes';
+	    }
+
+	    if (typeof gl.getContextAttributes().failIfMajorPerformanceCaveat === 'undefined') {
+            // If getContextAttributes() doesn't include the failIfMajorPerformanceCaveat
+            // property, assume the browser doesn't implement it yet.
+            return 'Not implemented';
+	    }
+
+	    return 'No';
+	}
+
 	var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
 	
     report = _.extend(report, {
@@ -129,6 +152,7 @@ $(function() {
         renderer: gl.getParameter(gl.RENDERER),
         antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
         angle: (navigator.platform === "Win32") && (lineWidthRange === describeRange([1,1])),
+        majorPerformanceCaveat: getMajorPerformanceCaveat(contextName),
         redBits: gl.getParameter(gl.RED_BITS),
         greenBits: gl.getParameter(gl.GREEN_BITS),
         blueBits: gl.getParameter(gl.BLUE_BITS),
@@ -162,8 +186,8 @@ $(function() {
         renderReport($("#webglSupportedTemplate").html());
     }
 
-    var pipeline = $(".pipeline"),
-        background = $(".background")[0];
+    var pipeline = $(".pipeline")
+    var background = $(".background")[0];
 
     background.width = pipeline.width();
     background.height = pipeline.height();
@@ -180,12 +204,12 @@ $(function() {
     var boxPadding = 4;
 
     function drawBox(element, fill) {
-        var pos = element.position(),
-            x = pos.left - boxPadding,
-            y = pos.top - boxPadding,
-            width = element.outerWidth() + (boxPadding * 2),
-            height = element.outerHeight() + (boxPadding * 2),
-            radius = 10;
+        var pos = element.position();
+        var x = pos.left - boxPadding;
+        var y = pos.top - boxPadding;
+        var width = element.outerWidth() + (boxPadding * 2);
+        var height = element.outerHeight() + (boxPadding * 2);
+        var radius = 10;
 
         context.fillStyle = fill;
         context.lineWidth = 2;
@@ -227,10 +251,10 @@ $(function() {
     function drawDownArrow(topBox, bottomBox) {
         context.beginPath();
 
-        var arrowTopX = (topBox.x + topBox.width) / 2,
-            arrowTopY = topBox.y + topBox.height,
-            arrowBottomX = (bottomBox.x + bottomBox.width) / 2,
-            arrowBottomY = bottomBox.y - 15;
+        var arrowTopX = (topBox.x + topBox.width) / 2;
+        var arrowTopY = topBox.y + topBox.height;
+        var arrowBottomX = (bottomBox.x + bottomBox.width) / 2;
+        var arrowBottomY = bottomBox.y - 15;
         context.moveTo(arrowTopX, arrowTopY);
         context.lineTo(arrowBottomX, arrowBottomY);
         context.stroke();
@@ -238,22 +262,22 @@ $(function() {
         drawDownHead(arrowBottomX, arrowBottomY);
     }
 
-    var vertexShaderBox = drawBox($(".vertexShader"), "#ff6700"),
-        rasterizerBox = drawBox($(".rasterizer"), "#3130cb"),
-        fragmentShaderBox = drawBox($(".fragmentShader"), "#ff6700"),
-        framebufferBox = drawBox($(".framebuffer"), "#7c177e"),
-        texturesBox = drawBox($(".textures"), "#3130cb");
+    var vertexShaderBox = drawBox($(".vertexShader"), "#ff6700");
+    var rasterizerBox = drawBox($(".rasterizer"), "#3130cb");
+    var fragmentShaderBox = drawBox($(".fragmentShader"), "#ff6700");
+    var framebufferBox = drawBox($(".framebuffer"), "#7c177e");
+    var texturesBox = drawBox($(".textures"), "#3130cb");
 
-    var arrowRightX = texturesBox.x,
-        arrowRightY = texturesBox.y + (texturesBox.height / 2),
-        arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2,
-        arrowMidY = arrowRightY,
-        arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2),
-        arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height / 2),
-        arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15,
-        arrowTopLeftY = arrowTopMidY,
-        arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15,
-        arrowBottomLeftY = arrowBottomMidY;
+    var arrowRightX = texturesBox.x;
+    var arrowRightY = texturesBox.y + (texturesBox.height / 2);
+    var arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2;
+    var arrowMidY = arrowRightY;
+    var arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2);
+    var arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height / 2);
+    var arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15;
+    var arrowTopLeftY = arrowTopMidY;
+    var arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15;
+    var arrowBottomLeftY = arrowBottomMidY;
 
 	if (hasVertexTextureUnits) {
 	    context.fillStyle = context.strokeStyle = "black";
@@ -299,5 +323,4 @@ $(function() {
     drawDownArrow(vertexShaderBox, rasterizerBox);
     drawDownArrow(rasterizerBox, fragmentShaderBox);
     drawDownArrow(fragmentShaderBox, framebufferBox);
-
 });
