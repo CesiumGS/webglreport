@@ -169,6 +169,16 @@ $(function() {
 	    return 'No';
 	}
 
+	function getDraftExtensions() {
+	    if (navigator.userAgent.indexOf('Chrome') !== -1) {
+            return 'To see draft extensions in Chrome, browse to about:flags, enable the "Enable WebGL Draft Extensions" option, and relaunch.';
+	    } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+            return 'To see draft extensions in Firefox, browse to about:config and set webgl.enable-draft-extensions to true.';
+	    }
+
+	    return '';
+	}
+
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -200,7 +210,8 @@ $(function() {
         maxAnisotropy: getMaxAnisotropy(),
         extensions: gl.getSupportedExtensions(),
         fragmentShaderPrecision: describePrecision(gl.FRAGMENT_SHADER),
-        vertexShaderPrecision: describePrecision(gl.VERTEX_SHADER)
+        vertexShaderPrecision: describePrecision(gl.VERTEX_SHADER),
+        draftExtensions: getDraftExtensions()
     });
 
     if (window.externalHost) {
