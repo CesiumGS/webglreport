@@ -150,7 +150,7 @@ $(function() {
 	}
 
 	function getMajorPerformanceCaveat(contextName) {
-		// Does context creation fail to do a major performance caveat?
+            // Does context creation fail to do a major performance caveat?
 	    var canvas = $('<canvas />', { width : '1', height : '1' }).appendTo('body');
 	    var gl = canvas[0].getContext(contextName, { failIfMajorPerformanceCaveat : true });
 	    canvas.remove();
