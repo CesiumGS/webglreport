@@ -29,13 +29,13 @@ $(function() {
 
     if (!window.WebGLRenderingContext) {
         // The browser does not support WebGL
-        renderReport($("#webglNotSupportedTemplate").html());
+        renderReport($('#webglNotSupportedTemplate').html());
         return;
     }
 
-    var canvas = $("<canvas />", { width: "1", height: "1" }).appendTo("body");
+    var canvas = $('<canvas />', { width: '1', height: '1' }).appendTo('body');
     var gl;
-    var contextName = _.find(["webgl", "experimental-webgl"], function(name) {
+    var contextName = _.find(['webgl', 'experimental-webgl'], function(name) {
         gl = canvas[0].getContext(name, { stencil: true });
         return !!gl;
     });
@@ -43,11 +43,11 @@ $(function() {
 
     if (!gl) {
         // The browser supports WebGL, but initialization failed
-        renderReport($("#webglNotSupportedTemplate").html());
+        renderReport($('#webglNotSupportedTemplate').html());
         return;
     }
 
-    var template = _.template($("#reportTemplate").html());
+    var template = _.template($('#reportTemplate').html());
     var report = {
         platform: navigator.platform,
         userAgent: navigator.userAgent
@@ -55,34 +55,34 @@ $(function() {
 
     function getExtensionUrl(extension) {
         //special cases
-        if (extension === "WEBKIT_lose_context") {
-            extension = "WEBGL_lose_context";
+        if (extension === 'WEBKIT_lose_context') {
+            extension = 'WEBGL_lose_context';
         }
-        else if (extension === "WEBKIT_WEBGL_compressed_textures") {
-            extension = "";
+        else if (extension === 'WEBKIT_WEBGL_compressed_textures') {
+            extension = '';
         }
-        extension = extension.replace(/^WEBKIT_/, "");
-        extension = extension.replace(/^MOZ_/, "");
-        extension = extension.replace(/_EXT_/, "_");
+        extension = extension.replace(/^WEBKIT_/, '');
+        extension = extension.replace(/^MOZ_/, '');
+        extension = extension.replace(/_EXT_/, '_');
 
-        return "http://www.khronos.org/registry/webgl/extensions/" + extension;
+        return 'http://www.khronos.org/registry/webgl/extensions/' + extension;
     }
 
     function renderReport(header) {
-        $("#output").html(header + template({
+        $('#output').html(header + template({
             report: report,
             getExtensionUrl: getExtensionUrl
         }));
     }
 
     function describeRange(value) {
-        return "[" + value[0] + ", " + value[1] + "]";
+        return '[' + value[0] + ', ' + value[1] + ']';
     }
 
     function getMaxAnisotropy() {
-        var e = gl.getExtension("EXT_texture_filter_anisotropic")
-                || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
-                || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+        var e = gl.getExtension('EXT_texture_filter_anisotropic')
+                || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic')
+                || gl.getExtension('MOZ_EXT_texture_filter_anisotropic');
 
         if (e) {
             var max = gl.getParameter(e.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
@@ -119,12 +119,12 @@ $(function() {
         }
 
         return '<span title="High: ' + getPrecisionDescription(high, true) + '\n\nMedium: ' + getPrecisionDescription(medium, true) + '\n\nLow: ' + getPrecisionDescription(low, true) + '">' +
-               getPrecisionDescription(best, false) + '</span>';
+            getPrecisionDescription(best, false) + '</span>';
 	}
 
 	function getMajorPerformanceCaveat(contextName) {
 		// Does context creation fail to do a major performance caveat?
-	    var canvas = $("<canvas />", { width : "1", height : "1" }).appendTo("body");
+	    var canvas = $('<canvas />', { width : '1', height : '1' }).appendTo('body');
 	    var gl = canvas[0].getContext(contextName, { failIfMajorPerformanceCaveat : true });
 	    canvas.remove();
 
@@ -151,7 +151,7 @@ $(function() {
         vendor: gl.getParameter(gl.VENDOR),
         renderer: gl.getParameter(gl.RENDERER),
         antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
-        angle: (navigator.platform === "Win32") && (lineWidthRange === describeRange([1,1])),
+        angle: (navigator.platform === 'Win32') && (lineWidthRange === describeRange([1,1])),
         majorPerformanceCaveat: getMajorPerformanceCaveat(contextName),
         redBits: gl.getParameter(gl.RED_BITS),
         greenBits: gl.getParameter(gl.GREEN_BITS),
@@ -180,26 +180,26 @@ $(function() {
 
     if (window.externalHost) {
         // Tab is running with Chrome Frame
-        renderReport($("#webglSupportedChromeFrameTemplate").html());
+        renderReport($('#webglSupportedChromeFrameTemplate').html());
     }
     else {
-        renderReport($("#webglSupportedTemplate").html());
+        renderReport($('#webglSupportedTemplate').html());
     }
 
-    var pipeline = $(".pipeline")
-    var background = $(".background")[0];
+    var pipeline = $('.pipeline')
+    var background = $('.background')[0];
 
     background.width = pipeline.width();
     background.height = pipeline.height();
 
     var hasVertexTextureUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) > 0;
 
-    var context = background.getContext("2d");
+    var context = background.getContext('2d');
     context.shadowOffsetX = 3;
     context.shadowOffsetY = 3;
     context.shadowBlur = 7;
-    context.shadowColor = "rgba(0, 0, 0, 0.5)";
-    context.strokeStyle = "black";
+    context.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    context.strokeStyle = 'black';
 
     var boxPadding = 4;
 
@@ -262,11 +262,11 @@ $(function() {
         drawDownHead(arrowBottomX, arrowBottomY);
     }
 
-    var vertexShaderBox = drawBox($(".vertexShader"), "#ff6700");
-    var rasterizerBox = drawBox($(".rasterizer"), "#3130cb");
-    var fragmentShaderBox = drawBox($(".fragmentShader"), "#ff6700");
-    var framebufferBox = drawBox($(".framebuffer"), "#7c177e");
-    var texturesBox = drawBox($(".textures"), "#3130cb");
+    var vertexShaderBox = drawBox($('.vertexShader'), '#ff6700');
+    var rasterizerBox = drawBox($('.rasterizer'), '#3130cb');
+    var fragmentShaderBox = drawBox($('.fragmentShader'), '#ff6700');
+    var framebufferBox = drawBox($('.framebuffer'), '#7c177e');
+    var texturesBox = drawBox($('.textures'), '#3130cb');
 
     var arrowRightX = texturesBox.x;
     var arrowRightY = texturesBox.y + (texturesBox.height / 2);
@@ -280,11 +280,11 @@ $(function() {
     var arrowBottomLeftY = arrowBottomMidY;
 
 	if (hasVertexTextureUnits) {
-	    context.fillStyle = context.strokeStyle = "black";
+	    context.fillStyle = context.strokeStyle = 'black';
 	    context.lineWidth = 10;
 	} else {
-		context.fillStyle = context.strokeStyle = "#FFF";
-	    context.shadowColor = "#000";
+		context.fillStyle = context.strokeStyle = '#FFF';
+	    context.shadowColor = '#000';
 		context.shadowOffsetX = context.shadowOffsetY = 0;
 	    context.lineWidth = 8;
 	}
@@ -298,14 +298,14 @@ $(function() {
 		drawLeftHead(arrowTopLeftX, arrowTopLeftY);
 	} else {
 		context.stroke();
-	    context.shadowColor = "#000";
-		context.font = "bold 14pt arial, Sans-Serif";
-		context.fillText("No vertex textures available.", arrowMidX - 8, arrowTopMidY - 8);
+	    context.shadowColor = '#000';
+		context.font = 'bold 14pt arial, Sans-Serif';
+		context.fillText('No vertex textures available.', arrowMidX - 8, arrowTopMidY - 8);
 	}
 
     context.lineWidth = 10;
-    context.fillStyle = context.strokeStyle = "black";
-    context.shadowColor = "rgba(0, 0, 0, 0.5)";
+    context.fillStyle = context.strokeStyle = 'black';
+    context.shadowColor = 'rgba(0, 0, 0, 0.5)';
 	context.shadowOffsetX = context.shadowOffsetY = 3;
     context.beginPath();
 
