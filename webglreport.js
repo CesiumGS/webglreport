@@ -27,59 +27,62 @@ THE SOFTWARE.
 $(function() {
     "use strict";
 
-    var canvas = $("<canvas />", { width: "1", height: "1" }).appendTo("body"),
-        gl,
-        contextName = _.find(["webgl", "experimental-webgl"], function(name) {
-            try {
-                gl = canvas[0].getContext(name, { stencil: true });
-                return !!gl;
-            } catch (e) {
-                return false;
-            }
-        }),
-        template = _.template($("#reportTemplate").html()),
-        report = {
-            platform: navigator.platform,
-            userAgent: navigator.userAgent
-        };
+    if (!window.WebGLRenderingContext) {
+        // The browser does not support WebGL
+        renderReport($('#webglNotSupportedTemplate').html());
+        return;
+    }
 
+    var canvas = $('<canvas />', { width: '1', height: '1' }).appendTo('body');
+    var gl;
+    var contextName = _.find(['webgl', 'experimental-webgl'], function(name) {
+        gl = canvas[0].getContext(name, { stencil: true });
+        return !!gl;
+    });
     canvas.remove();
+
+    if (!gl) {
+        // The browser supports WebGL, but initialization failed
+        renderReport($('#webglNotSupportedTemplate').html());
+        return;
+    }
+
+    var template = _.template($('#reportTemplate').html());
+    var report = {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent
+    };
 
     function getExtensionUrl(extension) {
         //special cases
-        if (extension === "WEBKIT_lose_context") {
-            extension = "WEBGL_lose_context";
+        if (extension === 'WEBKIT_lose_context') {
+            extension = 'WEBGL_lose_context';
         }
-        else if (extension === "WEBKIT_WEBGL_compressed_textures") {
-            extension = "";
+        else if (extension === 'WEBKIT_WEBGL_compressed_textures') {
+            extension = '';
         }
-        extension = extension.replace(/^WEBKIT_/, "");
-        extension = extension.replace(/^MOZ_/, "");
-        extension = extension.replace(/_EXT_/, "_");
+        extension = extension.replace(/^WEBKIT_/, '');
+        extension = extension.replace(/^MOZ_/, '');
+        extension = extension.replace(/_EXT_/, '_');
 
-        return "http://www.khronos.org/registry/webgl/extensions/" + extension;
+        return 'http://www.khronos.org/registry/webgl/extensions/' + extension;
     }
 
     function renderReport(header) {
-        $("#output").html(header + template({
+        $('#output').html(header + template({
             report: report,
             getExtensionUrl: getExtensionUrl
         }));
     }
 
-    if (!gl) {
-        renderReport($("#webglNotSupportedTemplate").html());
-        return;
-    }
-
     function describeRange(value) {
-        return "[" + value[0] + ", " + value[1] + "]";
+        return '[' + value[0] + ', ' + value[1] + ']';
     }
 
     function getMaxAnisotropy() {
-        var e = gl.getExtension("EXT_texture_filter_anisotropic")
-                || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
-                || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+        var e = gl.getExtension('EXT_texture_filter_anisotropic')
+                || gl.getExtension('WEBKIT_EXT_texture_filter_anisotropic')
+                || gl.getExtension('MOZ_EXT_texture_filter_anisotropic');
 
         if (e) {
             var max = gl.getParameter(e.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
@@ -116,11 +119,66 @@ $(function() {
         }
 
         return '<span title="High: ' + getPrecisionDescription(high, true) + '\n\nMedium: ' + getPrecisionDescription(medium, true) + '\n\nLow: ' + getPrecisionDescription(low, true) + '">' +
-               getPrecisionDescription(best, false) + '</span>';
+            getPrecisionDescription(best, false) + '</span>';
 	}
 
-	var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
-	
+	function isPowerOfTwo(n) {
+        return (n !== 0) && ((n & (n - 1)) === 0);
+    }
+
+	function getAngle(gl) {
+		var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
+
+		// Heuristic: ANGLE is only on Windows and does not implement line width greater than one.
+		var angle = (navigator.platform === 'Win32') && (lineWidthRange === describeRange([1,1]));
+
+		if (angle) {
+			// Heuristic: D3D11 backend does not appear to reserve uniforms like the D3D9 backend, e.g.,
+			// D3D11 may have 1024 uniforms per stage, but D3D9 has 254 and 221.
+			//
+			// We could also test for WEBGL_draw_buffers, but many systems do not have it yet
+			// due to driver bugs, etc.
+			if (isPowerOfTwo(gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)) &&
+                isPowerOfTwo(gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS))) {
+				return 'Yes, D3D11';
+			} else {
+				return 'Yes, D3D9';
+			}
+		}
+
+		return 'No';
+	}
+
+	function getMajorPerformanceCaveat(contextName) {
+            // Does context creation fail to do a major performance caveat?
+	    var canvas = $('<canvas />', { width : '1', height : '1' }).appendTo('body');
+	    var gl = canvas[0].getContext(contextName, { failIfMajorPerformanceCaveat : true });
+	    canvas.remove();
+
+	    if (!gl) {
+            // Our original context creation passed.  This did not.
+            return 'Yes';
+	    }
+
+	    if (typeof gl.getContextAttributes().failIfMajorPerformanceCaveat === 'undefined') {
+            // If getContextAttributes() doesn't include the failIfMajorPerformanceCaveat
+            // property, assume the browser doesn't implement it yet.
+            return 'Not implemented';
+	    }
+
+	    return 'No';
+	}
+
+	function getDraftExtensions() {
+	    if (navigator.userAgent.indexOf('Chrome') !== -1) {
+            return 'To see draft extensions in Chrome, browse to about:flags, enable the "Enable WebGL Draft Extensions" option, and relaunch.';
+	    } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+            return 'To see draft extensions in Firefox, browse to about:config and set webgl.enable-draft-extensions to true.';
+	    }
+
+	    return '';
+	}
+
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -128,7 +186,8 @@ $(function() {
         vendor: gl.getParameter(gl.VENDOR),
         renderer: gl.getParameter(gl.RENDERER),
         antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
-        angle: (navigator.platform === "Win32") && (lineWidthRange === describeRange([1,1])),
+        angle: getAngle(gl),
+        majorPerformanceCaveat: getMajorPerformanceCaveat(contextName),
         redBits: gl.getParameter(gl.RED_BITS),
         greenBits: gl.getParameter(gl.GREEN_BITS),
         blueBits: gl.getParameter(gl.BLUE_BITS),
@@ -145,47 +204,48 @@ $(function() {
         maxVertexAttributes: gl.getParameter(gl.MAX_VERTEX_ATTRIBS),
         maxVertexTextureImageUnits: gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS),
         maxVertexUniformVectors: gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS),
-        aliasedLineWidthRange: lineWidthRange,
+        aliasedLineWidthRange: describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE)),
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
         extensions: gl.getSupportedExtensions(),
         fragmentShaderPrecision: describePrecision(gl.FRAGMENT_SHADER),
-        vertexShaderPrecision: describePrecision(gl.VERTEX_SHADER)
+        vertexShaderPrecision: describePrecision(gl.VERTEX_SHADER),
+        draftExtensions: getDraftExtensions()
     });
 
     if (window.externalHost) {
         // Tab is running with Chrome Frame
-        renderReport($("#webglSupportedChromeFrameTemplate").html());
+        renderReport($('#webglSupportedChromeFrameTemplate').html());
     }
     else {
-        renderReport($("#webglSupportedTemplate").html());
+        renderReport($('#webglSupportedTemplate').html());
     }
 
-    var pipeline = $(".pipeline"),
-        background = $(".background")[0];
+    var pipeline = $('.pipeline')
+    var background = $('.background')[0];
 
     background.width = pipeline.width();
     background.height = pipeline.height();
 
     var hasVertexTextureUnits = gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS) > 0;
 
-    var context = background.getContext("2d");
+    var context = background.getContext('2d');
     context.shadowOffsetX = 3;
     context.shadowOffsetY = 3;
     context.shadowBlur = 7;
-    context.shadowColor = "rgba(0, 0, 0, 0.5)";
-    context.strokeStyle = "black";
+    context.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    context.strokeStyle = 'black';
 
     var boxPadding = 4;
 
     function drawBox(element, fill) {
-        var pos = element.position(),
-            x = pos.left - boxPadding,
-            y = pos.top - boxPadding,
-            width = element.outerWidth() + (boxPadding * 2),
-            height = element.outerHeight() + (boxPadding * 2),
-            radius = 10;
+        var pos = element.position();
+        var x = pos.left - boxPadding;
+        var y = pos.top - boxPadding;
+        var width = element.outerWidth() + (boxPadding * 2);
+        var height = element.outerHeight() + (boxPadding * 2);
+        var radius = 10;
 
         context.fillStyle = fill;
         context.lineWidth = 2;
@@ -227,10 +287,10 @@ $(function() {
     function drawDownArrow(topBox, bottomBox) {
         context.beginPath();
 
-        var arrowTopX = (topBox.x + topBox.width) / 2,
-            arrowTopY = topBox.y + topBox.height,
-            arrowBottomX = (bottomBox.x + bottomBox.width) / 2,
-            arrowBottomY = bottomBox.y - 15;
+        var arrowTopX = (topBox.x + topBox.width) / 2;
+        var arrowTopY = topBox.y + topBox.height;
+        var arrowBottomX = (bottomBox.x + bottomBox.width) / 2;
+        var arrowBottomY = bottomBox.y - 15;
         context.moveTo(arrowTopX, arrowTopY);
         context.lineTo(arrowBottomX, arrowBottomY);
         context.stroke();
@@ -238,29 +298,29 @@ $(function() {
         drawDownHead(arrowBottomX, arrowBottomY);
     }
 
-    var vertexShaderBox = drawBox($(".vertexShader"), "#ff6700"),
-        rasterizerBox = drawBox($(".rasterizer"), "#3130cb"),
-        fragmentShaderBox = drawBox($(".fragmentShader"), "#ff6700"),
-        framebufferBox = drawBox($(".framebuffer"), "#7c177e"),
-        texturesBox = drawBox($(".textures"), "#3130cb");
+    var vertexShaderBox = drawBox($('.vertexShader'), '#ff6700');
+    var rasterizerBox = drawBox($('.rasterizer'), '#3130cb');
+    var fragmentShaderBox = drawBox($('.fragmentShader'), '#ff6700');
+    var framebufferBox = drawBox($('.framebuffer'), '#7c177e');
+    var texturesBox = drawBox($('.textures'), '#3130cb');
 
-    var arrowRightX = texturesBox.x,
-        arrowRightY = texturesBox.y + (texturesBox.height / 2),
-        arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2,
-        arrowMidY = arrowRightY,
-        arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2),
-        arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height / 2),
-        arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15,
-        arrowTopLeftY = arrowTopMidY,
-        arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15,
-        arrowBottomLeftY = arrowBottomMidY;
+    var arrowRightX = texturesBox.x;
+    var arrowRightY = texturesBox.y + (texturesBox.height / 2);
+    var arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2;
+    var arrowMidY = arrowRightY;
+    var arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2);
+    var arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height / 2);
+    var arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15;
+    var arrowTopLeftY = arrowTopMidY;
+    var arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15;
+    var arrowBottomLeftY = arrowBottomMidY;
 
 	if (hasVertexTextureUnits) {
-	    context.fillStyle = context.strokeStyle = "black";
+	    context.fillStyle = context.strokeStyle = 'black';
 	    context.lineWidth = 10;
 	} else {
-		context.fillStyle = context.strokeStyle = "#FFF";
-	    context.shadowColor = "#000";
+		context.fillStyle = context.strokeStyle = '#FFF';
+	    context.shadowColor = '#000';
 		context.shadowOffsetX = context.shadowOffsetY = 0;
 	    context.lineWidth = 8;
 	}
@@ -274,14 +334,14 @@ $(function() {
 		drawLeftHead(arrowTopLeftX, arrowTopLeftY);
 	} else {
 		context.stroke();
-	    context.shadowColor = "#000";
-		context.font = "bold 14pt arial, Sans-Serif";
-		context.fillText("No vertex textures available.", arrowMidX - 8, arrowTopMidY - 8);
+	    context.shadowColor = '#000';
+		context.font = 'bold 14pt arial, Sans-Serif';
+		context.fillText('No vertex textures available.', arrowMidX - 8, arrowTopMidY - 8);
 	}
 
     context.lineWidth = 10;
-    context.fillStyle = context.strokeStyle = "black";
-    context.shadowColor = "rgba(0, 0, 0, 0.5)";
+    context.fillStyle = context.strokeStyle = 'black';
+    context.shadowColor = 'rgba(0, 0, 0, 0.5)';
 	context.shadowOffsetX = context.shadowOffsetY = 3;
     context.beginPath();
 
@@ -299,5 +359,4 @@ $(function() {
     drawDownArrow(vertexShaderBox, rasterizerBox);
     drawDownArrow(rasterizerBox, fragmentShaderBox);
     drawDownArrow(fragmentShaderBox, framebufferBox);
-
 });
