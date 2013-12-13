@@ -108,7 +108,7 @@ $(function() {
         return '[-' + formatPower(precision.rangeMin, verbose) + ', ' + formatPower(precision.rangeMax, verbose) + '] (' + precision.precision + verbosePart + ')'
     }
 
-	function describePrecision(shaderType) {
+    function getBestFloatPrecision(shaderType) {
         var high = gl.getShaderPrecisionFormat(shaderType, gl.HIGH_FLOAT);
         var medium = gl.getShaderPrecisionFormat(shaderType, gl.MEDIUM_FLOAT);
         var low = gl.getShaderPrecisionFormat(shaderType, gl.LOW_FLOAT);
@@ -120,64 +120,73 @@ $(function() {
 
         return '<span title="High: ' + getPrecisionDescription(high, true) + '\n\nMedium: ' + getPrecisionDescription(medium, true) + '\n\nLow: ' + getPrecisionDescription(low, true) + '">' +
             getPrecisionDescription(best, false) + '</span>';
-	}
+    }
 
-	function isPowerOfTwo(n) {
+    function getFloatIntPrecision(gl) {
+        var high = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+        var s = (high.precision !== 0) ? 'highp/' : 'mediump/';
+
+        high = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_INT);
+        s += (high.rangeMax !== 0) ? 'highp' : 'lowp';
+
+        return s;
+    }
+
+    function isPowerOfTwo(n) {
         return (n !== 0) && ((n & (n - 1)) === 0);
     }
 
-	function getAngle(gl) {
-		var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
+    function getAngle(gl) {
+        var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
 
-		// Heuristic: ANGLE is only on Windows and does not implement line width greater than one.
-		var angle = (navigator.platform === 'Win32') && (lineWidthRange === describeRange([1,1]));
+        // Heuristic: ANGLE is only on Windows and does not implement line width greater than one.
+        var angle = (navigator.platform === 'Win32') && (lineWidthRange === describeRange([1,1]));
 
-		if (angle) {
-			// Heuristic: D3D11 backend does not appear to reserve uniforms like the D3D9 backend, e.g.,
-			// D3D11 may have 1024 uniforms per stage, but D3D9 has 254 and 221.
-			//
-			// We could also test for WEBGL_draw_buffers, but many systems do not have it yet
-			// due to driver bugs, etc.
-			if (isPowerOfTwo(gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)) &&
-                isPowerOfTwo(gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS))) {
-				return 'Yes, D3D11';
-			} else {
-				return 'Yes, D3D9';
-			}
-		}
+        if (angle) {
+            // Heuristic: D3D11 backend does not appear to reserve uniforms like the D3D9 backend, e.g.,
+            // D3D11 may have 1024 uniforms per stage, but D3D9 has 254 and 221.
+            //
+            // We could also test for WEBGL_draw_buffers, but many systems do not have it yet
+            // due to driver bugs, etc.
+            if (isPowerOfTwo(gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)) && isPowerOfTwo(gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS))) {
+                return 'Yes, D3D11';
+            } else {
+                return 'Yes, D3D9';
+            }
+        }
 
-		return 'No';
-	}
+        return 'No';
+    }
 
-	function getMajorPerformanceCaveat(contextName) {
-		// Does context creation fail to do a major performance caveat?
-	    var canvas = $('<canvas />', { width : '1', height : '1' }).appendTo('body');
-	    var gl = canvas[0].getContext(contextName, { failIfMajorPerformanceCaveat : true });
-	    canvas.remove();
+    function getMajorPerformanceCaveat(contextName) {
+        // Does context creation fail to do a major performance caveat?
+        var canvas = $('<canvas />', { width : '1', height : '1' }).appendTo('body');
+        var gl = canvas[0].getContext(contextName, { failIfMajorPerformanceCaveat : true });
+        canvas.remove();
 
-	    if (!gl) {
+        if (!gl) {
             // Our original context creation passed.  This did not.
             return 'Yes';
-	    }
+	}
 
-	    if (typeof gl.getContextAttributes().failIfMajorPerformanceCaveat === 'undefined') {
+        if (typeof gl.getContextAttributes().failIfMajorPerformanceCaveat === 'undefined') {
             // If getContextAttributes() doesn't include the failIfMajorPerformanceCaveat
             // property, assume the browser doesn't implement it yet.
             return 'Not implemented';
-	    }
+        }
 
-	    return 'No';
-	}
+	return 'No';
+    }
 
-	function getDraftExtensions() {
-	    if (navigator.userAgent.indexOf('Chrome') !== -1) {
+    function getDraftExtensions() {
+        if (navigator.userAgent.indexOf('Chrome') !== -1) {
             return 'To see draft extensions in Chrome, browse to about:flags, enable the "Enable WebGL Draft Extensions" option, and relaunch.';
-	    } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+	} else if (navigator.userAgent.indexOf('Firefox') !== -1) {
             return 'To see draft extensions in Firefox, browse to about:config and set webgl.enable-draft-extensions to true.';
-	    }
-
-	    return '';
 	}
+
+        return '';
+    }
 
     report = _.extend(report, {
         contextName: contextName,
@@ -209,8 +218,9 @@ $(function() {
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
         extensions: gl.getSupportedExtensions(),
-        fragmentShaderPrecision: describePrecision(gl.FRAGMENT_SHADER),
-        vertexShaderPrecision: describePrecision(gl.VERTEX_SHADER),
+        vertexShaderBestPrecision: getBestFloatPrecision(gl.VERTEX_SHADER),
+        fragmentShaderBestPrecision: getBestFloatPrecision(gl.FRAGMENT_SHADER),
+        fragmentShaderFloatIntPrecision: getFloatIntPrecision(gl),
         draftExtensions: getDraftExtensions()
     });
 

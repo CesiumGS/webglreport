@@ -102,7 +102,7 @@ THE SOFTWARE.
 								</tr>
 								<tr>
 									<th>Best float precision:</th>
-									<td><%= report.vertexShaderPrecision %></td>
+									<td><%= report.vertexShaderBestPrecision %></td>
 								</tr>
 							</table>
 						</div>
@@ -131,8 +131,12 @@ THE SOFTWARE.
 									<td><%= report.maxTextureImageUnits %></td>
 								</tr>
 								<tr>
+									<th>float/int precision:</th>
+									<td><%= report.fragmentShaderFloatIntPrecision %></td>
+								</tr>
+								<tr>
 									<th>Best float precision:</th>
-									<td><%= report.fragmentShaderPrecision %></td>
+									<td><%= report.fragmentShaderBestPrecision %></td>
 								</tr>
 							</table>
 						</div>
