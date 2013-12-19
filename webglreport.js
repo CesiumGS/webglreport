@@ -139,8 +139,10 @@ $(function() {
     function getAngle(gl) {
         var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
 
-        // Heuristic: ANGLE is only on Windows and does not implement line width greater than one.
-        var angle = (navigator.platform === 'Win32') && (lineWidthRange === describeRange([1,1]));
+        // Heuristic: ANGLE is only on Windows, not in IE, and does not implement line width greater than one.
+        var angle = (navigator.platform === 'Win32') && 
+            (gl.getParameter(gl.RENDERER) !== 'Internet Explorer') && 
+            (lineWidthRange === describeRange([1,1]));
 
         if (angle) {
             // Heuristic: D3D11 backend does not appear to reserve uniforms like the D3D9 backend, e.g.,
