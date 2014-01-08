@@ -27,6 +27,12 @@ THE SOFTWARE.
 $(function() {
     "use strict";
 
+    var template = _.template($('#reportTemplate').html());
+    var report = {
+        platform: navigator.platform,
+        userAgent: navigator.userAgent
+    };
+
     if (!window.WebGLRenderingContext) {
         // The browser does not support WebGL
         renderReport($('#webglNotSupportedTemplate').html());
@@ -43,15 +49,9 @@ $(function() {
 
     if (!gl) {
         // The browser supports WebGL, but initialization failed
-        renderReport($('#webglNotSupportedTemplate').html());
+        renderReport($('#webglNotEnabledTemplate').html());
         return;
     }
-
-    var template = _.template($('#reportTemplate').html());
-    var report = {
-        platform: navigator.platform,
-        userAgent: navigator.userAgent
-    };
 
     function getExtensionUrl(extension) {
         //special cases
