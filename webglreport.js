@@ -65,7 +65,7 @@ $(function() {
         extension = extension.replace(/^MOZ_/, '');
         extension = extension.replace(/_EXT_/, '_');
 
-        return 'http://www.khronos.org/registry/webgl/extensions/' + extension;
+        return 'https://www.khronos.org/registry/webgl/extensions/' + extension;
     }
 
     function renderReport(header) {
@@ -86,7 +86,7 @@ $(function() {
 
         if (e) {
             var max = gl.getParameter(e.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-            // See Canary bug: http://code.google.com/p/chromium/issues/detail?id=117450
+            // See Canary bug: https://code.google.com/p/chromium/issues/detail?id=117450
             if (max === 0) {
                 max = 2;
             }
