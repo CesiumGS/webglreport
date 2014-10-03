@@ -190,6 +190,15 @@ $(function() {
         return '';
     }
 
+    function getMaxColorBuffers(gl) {
+        var maxColorBuffers = 1;
+        var ext = gl.getExtension("WEBGL_draw_buffers");
+		if (ext != null) 
+    		maxColorBuffers = gl.getParameter(ext.MAX_DRAW_BUFFERS_WEBGL);
+        
+        return maxColorBuffers;
+    }
+
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -199,6 +208,7 @@ $(function() {
         antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
         angle: getAngle(gl),
         majorPerformanceCaveat: getMajorPerformanceCaveat(contextName),
+        maxColorBuffers: getMaxColorBuffers(gl),
         redBits: gl.getParameter(gl.RED_BITS),
         greenBits: gl.getParameter(gl.GREEN_BITS),
         blueBits: gl.getParameter(gl.BLUE_BITS),
