@@ -57,6 +57,18 @@ specific language governing permissions and limitations under the License.
 				<th>Renderer:</th>
 				<td><%= report.renderer %></td>
 			</tr>
+            <% if (report.unMaskedVendor !== '') { %>
+			<tr>
+				<th>Unmasked Vendor:</th>
+				<td><%= report.unMaskedVendor %></td>
+			</tr>
+            <% } %>
+            <% if (report.unMaskedRenderer !== '') { %>
+			<tr>
+				<th>Unmasked Renderer:</th>
+				<td><%= report.unMaskedRenderer %></td>
+			</tr>
+            <% } %>
 			<tr>
 				<th>Antialiasing:</th>
 				<td><%= report.antialias %></td>

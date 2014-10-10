@@ -199,12 +199,29 @@ $(function() {
         return maxColorBuffers;
     }
 
+    function getUnmaskedInfo(gl) {
+        var unMaskedInfo = {
+            renderer: '',
+            vendor: ''
+        };
+        
+        var dbgRenderInfo = gl.getExtension("WEBGL_debug_renderer_info");
+        if (dbgRenderInfo != null) {
+            unMaskedInfo.renderer = gl.getParameter(dbgRenderInfo.UNMASKED_RENDERER_WEBGL);
+            unMaskedInfo.vendor   = gl.getParameter(dbgRenderInfo.UNMASKED_VENDOR_WEBGL);
+        }
+        
+        return unMaskedInfo;
+    }
+    
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
         shadingLanguageVersion: gl.getParameter(gl.SHADING_LANGUAGE_VERSION),
         vendor: gl.getParameter(gl.VENDOR),
         renderer: gl.getParameter(gl.RENDERER),
+        unMaskedVendor: getUnmaskedInfo(gl).vendor,
+        unMaskedRenderer: getUnmaskedInfo(gl).renderer,
         antialias:  gl.getContextAttributes().antialias ? 'Available' : 'Not available',
         angle: getAngle(gl),
         majorPerformanceCaveat: getMajorPerformanceCaveat(contextName),
