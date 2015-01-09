@@ -1,5 +1,5 @@
 /**
-Copyright (c) 2011-2013 Contributors.
+Copyright 2011-2014 Analytical Graphics Inc. and Contributors
 
 The MIT License
 
@@ -41,7 +41,7 @@ $(function() {
 
     var canvas = $('<canvas />', { width: '1', height: '1' }).appendTo('body');
     var gl;
-    var contextName = _.find(['webgl', 'experimental-webgl'], function(name) {
+    var contextName = _.find(['experimental-webgl2', 'webgl', 'experimental-webgl'], function(name) {
         gl = canvas[0].getContext(name, { stencil: true });
         return !!gl;
     });
