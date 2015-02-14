@@ -18,7 +18,7 @@ $(function() {
 
     var canvas = $('<canvas />', { width: '1', height: '1' }).appendTo('body');
     var gl;
-    var contextName = _.find(['experimental-webgl2', 'webgl', 'experimental-webgl'], function(name) {
+    var contextName = _.find(['webgl2', 'experimental-webgl2', 'webgl', 'experimental-webgl'], function(name) {
         gl = canvas[0].getContext(name, { stencil: true });
         return !!gl;
     });
@@ -191,20 +191,12 @@ $(function() {
         return unMaskedInfo;
     }
     
-    function getWebGL2Instructions(contextName) {
-        if (contextName.indexOf('webgl2') === -1) {
-            if (navigator.userAgent.indexOf('Firefox') !== -1) {
-                return 'To enable WebGL 2 in Firefox, see <a href="https://wiki.mozilla.org/Platform/GFX/WebGL2">https://wiki.mozilla.org/Platform/GFX/WebGL2</a>.';
-            }
-        }
-
-        return '';
+    function getFunctionUrl(name) {
+        var filename = 'gl' + name[0].toUpperCase() + name.substring(1) + '.xhtml';
+        return 'http://www.khronos.org/opengles/sdk/docs/man3/html/' + filename;
     }
-    
-    function getWebGL2Identifiers(gl, contextName) {
-        var identifiers;
 
-// TODO: this is only functions
+    function getWebGL2Status(gl, contextName) {
         var webgl2Names = [
             'copyBufferSubData',
             'getBufferSubData',
@@ -297,19 +289,38 @@ $(function() {
             'bindVertexArray'
         ];
 
-        if (contextName.indexOf('webgl2') !== -1) {
-            var length = webgl2Names.length;
+        var webgl2 = (contextName.indexOf('webgl2') !== -1);
+        var instructions = '';
+
+        var functions = [];
+        var totalImplemented = 0;
+        var length = webgl2Names.length;
+
+        if (webgl2) {
             for (var i = 0; i < length; ++i) {
                 var name = webgl2Names[i];
-                if (gl[name]) {
-// TODO: color code?
-                    identifiers.push(name);
+                if (webgl2 && gl[name]) {
+                    functions.push('<a href="' + getFunctionUrl(name) + '">' + name + '</a>');
+                    ++totalImplemented;
+                } else {
+                    functions.push(name);
                 }
+            }
+        } else {
+            if (navigator.userAgent.indexOf('Firefox') !== -1) {
+                instructions = 'To enable WebGL 2 in Firefox, see <a href="https://wiki.mozilla.org/Platform/GFX/WebGL2">https://wiki.mozilla.org/Platform/GFX/WebGL2</a>.';
             }
         }
 
-        return identifiers;
+        return {
+            status : webgl2 ? (totalImplemented + ' of ' + length + ' new functions implemented.') :
+                'webgl2 and experimental-webgl2 contexts not available.',
+            functions : functions,
+            instructions : instructions
+        };
     }
+
+    var webgl2Status = getWebGL2Status(gl, contextName);
 
     report = _.extend(report, {
         contextName: contextName,
@@ -350,8 +361,9 @@ $(function() {
         extensions: gl.getSupportedExtensions(),
         draftExtensionsInstructions: getDraftExtensionsInstructions(),
 
-        webgl2Identifiers : getWebGL2Identifiers(gl, contextName),
-        webgl2Instructions : getWebGL2Instructions(contextName)
+        webgl2Status : webgl2Status.status,
+        webgl2Functions : webgl2Status.functions,
+        webgl2Instructions : webgl2Status.instructions
     });
 
     if (window.externalHost) {

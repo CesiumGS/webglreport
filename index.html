@@ -201,19 +201,24 @@
                 </td>
             </tr>
 			<tr>
-				<th colspan="2"><br /><a href="https://www.khronos.org/registry/webgl/specs/latest/2.0/">WebGL 2</a> Implementation Status:</th>
+				<th colspan="2"><br /><a href="https://www.khronos.org/registry/webgl/specs/latest/2.0/">WebGL 2</a> Functions Implementation Status:</th>
 			</tr>
-			<% _.each(report.webgl2Identifiers, function(e) { %>
+            <tr>
+                <td></td>
+                <td>
+                    <p><%= report.webgl2Status %></p>
+                </td>
+            </tr>
+			<% _.each(report.webgl2Functions, function(e) { %>
 				<tr>
 					<td></td>
 					<td>
-						<%= e %>
+						<p><%= e %></p>
 					</td>
 				</tr>
 			<% }) %>
             <tr>
                 <td colspan="2">
-                    <br />
                     <%= report.webgl2Instructions %>
                 </td>
             </tr>
