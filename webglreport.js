@@ -303,7 +303,7 @@ $(function() {
                     functions.push('<a href="' + getFunctionUrl(name) + '">' + name + '</a>');
                     ++totalImplemented;
                 } else {
-                    functions.push(name);
+                    functions.push('<span class="gray">' + name + '</span>');
                 }
             }
         } else {

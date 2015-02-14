@@ -105,3 +105,11 @@ th {
     top: 200px;
     left: 330px;
 }
+
+.code {
+    font-family: "Courier New";
+}
+
+.gray {
+    color: #555555;
+}
