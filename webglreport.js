@@ -1,26 +1,3 @@
-/**
-Copyright 2011-2014 Analytical Graphics Inc. and Contributors
-
-The MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
-
 /*jslint browser: true, vars: true, white: true, nomen: true*/
 /*jshint white: false, nomen: false*/
 /*global $, _*/
@@ -169,7 +146,7 @@ $(function() {
         if (!gl) {
             // Our original context creation passed.  This did not.
             return 'Yes';
-	}
+    }
 
         if (typeof gl.getContextAttributes().failIfMajorPerformanceCaveat === 'undefined') {
             // If getContextAttributes() doesn't include the failIfMajorPerformanceCaveat
@@ -177,15 +154,15 @@ $(function() {
             return 'Not implemented';
         }
 
-	return 'No';
+    return 'No';
     }
 
-    function getDraftExtensions() {
+    function getDraftExtensionsInstructions() {
         if (navigator.userAgent.indexOf('Chrome') !== -1) {
             return 'To see draft extensions in Chrome, browse to about:flags, enable the "Enable WebGL Draft Extensions" option, and relaunch.';
-	} else if (navigator.userAgent.indexOf('Firefox') !== -1) {
+        } else if (navigator.userAgent.indexOf('Firefox') !== -1) {
             return 'To see draft extensions in Firefox, browse to about:config and set webgl.enable-draft-extensions to true.';
-	}
+        }
 
         return '';
     }
@@ -193,8 +170,8 @@ $(function() {
     function getMaxColorBuffers(gl) {
         var maxColorBuffers = 1;
         var ext = gl.getExtension("WEBGL_draw_buffers");
-		if (ext != null) 
-    		maxColorBuffers = gl.getParameter(ext.MAX_DRAW_BUFFERS_WEBGL);
+        if (ext != null) 
+            maxColorBuffers = gl.getParameter(ext.MAX_DRAW_BUFFERS_WEBGL);
         
         return maxColorBuffers;
     }
@@ -214,6 +191,126 @@ $(function() {
         return unMaskedInfo;
     }
     
+    function getWebGL2Instructions(contextName) {
+        if (contextName.indexOf('webgl2') === -1) {
+            if (navigator.userAgent.indexOf('Firefox') !== -1) {
+                return 'To enable WebGL 2 in Firefox, see <a href="https://wiki.mozilla.org/Platform/GFX/WebGL2">https://wiki.mozilla.org/Platform/GFX/WebGL2</a>.';
+            }
+        }
+
+        return '';
+    }
+    
+    function getWebGL2Identifiers(gl, contextName) {
+        var identifiers;
+
+// TODO: this is only functions
+        var webgl2Names = [
+            'copyBufferSubData',
+            'getBufferSubData',
+            'blitFramebuffer',
+            'framebufferTextureLayer',
+            'getInternalformatParameter',
+            'invalidateFramebuffer',
+            'invalidateSubFramebuffer',
+            'readBuffer',
+            'renderbufferStorageMultisample',
+            'texStorage2D',
+            'texStorage3D',
+            'texImage3D',
+            'texSubImage3D',
+            'texSubImage3D',
+            'copyTexSubImage3D',
+            'compressedTexImage3D',
+            'compressedTexSubImage3D',
+            'getFragDataLocation',
+            'uniform1ui',
+            'uniform2ui',
+            'uniform3ui',
+            'uniform4ui',
+            'uniform1uiv',
+            'uniform2uiv',
+            'uniform3uiv',
+            'uniform4uiv',
+            'uniformMatrix2x3fv',
+            'uniformMatrix3x2fv',
+            'uniformMatrix2x4fv',
+            'uniformMatrix4x2fv',
+            'uniformMatrix3x4fv',
+            'uniformMatrix4x3fv',
+            'vertexAttribI4i',
+            'vertexAttribI4iv',
+            'vertexAttribI4ui',
+            'vertexAttribI4uiv',
+            'vertexAttribIPointer',
+            'vertexAttribDivisor',
+            'drawArraysInstanced',
+            'drawElementsInstanced',
+            'drawRangeElements',
+            'drawBuffers',
+            'clearBufferiv',
+            'clearBufferuiv',
+            'clearBufferfv',
+            'clearBufferfi',
+            'createQuery',
+            'deleteQuery',
+            'isQuery',
+            'beginQuery',
+            'endQuery',
+            'getQuery',
+            'getQueryParameter',
+            'createSampler',
+            'deleteSampler',
+            'isSampler',
+            'bindSampler',
+            'samplerParameteri',
+            'samplerParameterf',
+            'getSamplerParameter',
+            'fenceSync',
+            'isSync',
+            'deleteSync',
+            'clientWaitSync',
+            'waitSync',
+            'getSyncParameter',
+            'createTransformFeedback',
+            'deleteTransformFeedback',
+            'isTransformFeedback',
+            'bindTransformFeedback',
+            'beginTransformFeedback',
+            'endTransformFeedback',
+            'transformFeedbackVaryings',
+            'getTransformFeedbackVarying',
+            'pauseTransformFeedback',
+            'resumeTransformFeedback',
+            'bindBufferBase',
+            'bindBufferRange',
+            'getIndexedParameter',
+            'getUniformIndices',
+            'getActiveUniforms',
+            'getUniformBlockIndex',
+            'getActiveUniformBlockParameter',
+            'getActiveUniformBlockName',
+            'uniformBlockBinding',
+            'createVertexArray',
+            'deleteVertexArray',
+            'isVertexArray',
+            'bindVertexArray'
+        ];
+
+        if (contextName.indexOf('webgl2') !== -1) {
+            var length = webgl2Names.length;
+            for (var i = 0; i < length; ++i) {
+                var name = webgl2Names[i];
+                if (gl[name]) {
+// TODO: color code?
+                    identifiers.push(name);
+                }
+            }
+        }
+
+        return identifiers;
+    }
+
     report = _.extend(report, {
         contextName: contextName,
         glVersion: gl.getParameter(gl.VERSION),
@@ -246,11 +343,15 @@ $(function() {
         aliasedPointSizeRange: describeRange(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE)),
         maxViewportDimensions: describeRange(gl.getParameter(gl.MAX_VIEWPORT_DIMS)),
         maxAnisotropy: getMaxAnisotropy(),
-        extensions: gl.getSupportedExtensions(),
         vertexShaderBestPrecision: getBestFloatPrecision(gl.VERTEX_SHADER),
         fragmentShaderBestPrecision: getBestFloatPrecision(gl.FRAGMENT_SHADER),
         fragmentShaderFloatIntPrecision: getFloatIntPrecision(gl),
-        draftExtensions: getDraftExtensions()
+
+        extensions: gl.getSupportedExtensions(),
+        draftExtensionsInstructions: getDraftExtensionsInstructions(),
+
+        webgl2Identifiers : getWebGL2Identifiers(gl, contextName),
+        webgl2Instructions : getWebGL2Instructions(contextName)
     });
 
     if (window.externalHost) {
@@ -354,40 +455,40 @@ $(function() {
     var arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15;
     var arrowBottomLeftY = arrowBottomMidY;
 
-	if (hasVertexTextureUnits) {
-	    context.fillStyle = context.strokeStyle = 'black';
-	    context.lineWidth = 10;
-	} else {
-		context.fillStyle = context.strokeStyle = '#FFF';
-	    context.shadowColor = '#000';
-		context.shadowOffsetX = context.shadowOffsetY = 0;
-	    context.lineWidth = 8;
-	}
+    if (hasVertexTextureUnits) {
+        context.fillStyle = context.strokeStyle = 'black';
+        context.lineWidth = 10;
+    } else {
+        context.fillStyle = context.strokeStyle = '#FFF';
+        context.shadowColor = '#000';
+        context.shadowOffsetX = context.shadowOffsetY = 0;
+        context.lineWidth = 8;
+    }
 
-	context.beginPath();
-	context.moveTo(arrowMidX, arrowMidY);
-	context.lineTo(arrowMidX, arrowTopMidY);
-	if (hasVertexTextureUnits) {
-		context.lineTo(arrowTopLeftX, arrowTopMidY);
-		context.stroke();
-		drawLeftHead(arrowTopLeftX, arrowTopLeftY);
-	} else {
-		context.stroke();
-	    context.shadowColor = '#000';
-		context.font = 'bold 14pt arial, Sans-Serif';
-		context.fillText('No vertex textures available.', arrowMidX - 8, arrowTopMidY - 8);
-	}
+    context.beginPath();
+    context.moveTo(arrowMidX, arrowMidY);
+    context.lineTo(arrowMidX, arrowTopMidY);
+    if (hasVertexTextureUnits) {
+        context.lineTo(arrowTopLeftX, arrowTopMidY);
+        context.stroke();
+        drawLeftHead(arrowTopLeftX, arrowTopLeftY);
+    } else {
+        context.stroke();
+        context.shadowColor = '#000';
+        context.font = 'bold 14pt arial, Sans-Serif';
+        context.fillText('No vertex textures available.', arrowMidX - 8, arrowTopMidY - 8);
+    }
 
     context.lineWidth = 10;
     context.fillStyle = context.strokeStyle = 'black';
     context.shadowColor = 'rgba(0, 0, 0, 0.5)';
-	context.shadowOffsetX = context.shadowOffsetY = 3;
+    context.shadowOffsetX = context.shadowOffsetY = 3;
     context.beginPath();
 
     context.moveTo(arrowRightX, arrowRightY);
 
     context.lineTo(arrowMidX - context.lineWidth * 0.5, arrowMidY);
-	context.moveTo(arrowMidX, arrowMidY);
+    context.moveTo(arrowMidX, arrowMidY);
     context.lineTo(arrowMidX, arrowBottomMidY);
     context.lineTo(arrowBottomLeftX, arrowBottomLeftY);
 
