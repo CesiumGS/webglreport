@@ -48,7 +48,8 @@ $(function() {
     function renderReport(header) {
         $('#output').html(header + template({
             report: report,
-            getExtensionUrl: getExtensionUrl
+            getExtensionUrl: getExtensionUrl,
+            getWebGL2ExtensionUrl: getWebGL2ExtensionUrl
         }));
     }
 
@@ -191,7 +192,30 @@ $(function() {
         return unMaskedInfo;
     }
     
-    function getFunctionUrl(name) {
+    var shortenedNames = [
+        // List longer names before shorter names with the same base.
+        'uniform',
+        'vertexAttribIPointer',
+        'vertexAttribDivisor',
+        'vertexAttrib',
+        'clearBuffer',
+        'samplerParameter'
+    ];
+    var numShortenedNames = shortenedNames.length;
+
+    function getWebGL2ExtensionUrl(name) {
+        if (name === 'vertexAttribIPointer') {
+            name = 'vertexAttribPointer';
+        } else {
+            var nameLen = name.length;
+            for (var i = 0; i < numShortenedNames; ++i) {
+                var shortLen = shortenedNames[i].length;
+                if ((name.length >= shortLen) && (name.substring(0, shortLen) === shortenedNames[i])) {
+                    name = shortenedNames[i];
+                    break;
+                }
+            }
+        }
         var filename = 'gl' + name[0].toUpperCase() + name.substring(1) + '.xhtml';
         return 'http://www.khronos.org/opengles/sdk/docs/man3/html/' + filename;
     }
@@ -210,7 +234,7 @@ $(function() {
             'texStorage2D',
             'texStorage3D',
             'texImage3D',
-            'texSubImage3D',
+            'texSubImage2D',
             'texSubImage3D',
             'copyTexSubImage3D',
             'compressedTexImage3D',
@@ -299,12 +323,13 @@ $(function() {
         if (webgl2) {
             for (var i = 0; i < length; ++i) {
                 var name = webgl2Names[i];
+                var className = 'extension';
                 if (webgl2 && gl[name]) {
-                    functions.push('<a href="' + getFunctionUrl(name) + '">' + name + '</a>');
                     ++totalImplemented;
                 } else {
-                    functions.push('<span class="gray">' + name + '</span>');
+                    className += ' unsupported';
                 }
+                functions.push({ name: name, className: className });
             }
         } else {
             if (navigator.userAgent.indexOf('Firefox') !== -1) {

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<title>WebGL Report</title>
@@ -189,9 +189,9 @@
 			<% _.each(report.extensions, function(e) { %>
 				<tr>
 					<td></td>
-					<td>
-						<a href="<%= getExtensionUrl(e) %>"><%= e %></a>
-					</td>
+                    <td>
+                        <a class="extension" href="<%= getExtensionUrl(e) %>"><%= e %></a>
+                    </td>
 				</tr>
 			<% }) %>
             <tr>
@@ -212,9 +212,9 @@
 			<% _.each(report.webgl2Functions, function(e) { %>
 				<tr>
 					<td></td>
-					<td>
-						<span class="code"><%= e %></code>
-					</td>
+                    <td>
+                        <a class="<%= e.className %>" href="<%= getWebGL2ExtensionUrl(e.name) %>"><%= e.name %></a>
+                    </td>
 				</tr>
 			<% }) %>
             <tr>
