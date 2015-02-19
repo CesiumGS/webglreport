@@ -212,7 +212,7 @@ $(function() {
         'vertexAttribI4iv' : 'vertexAttrib',
         'vertexAttribI4ui' : 'vertexAttrib',
         'vertexAttribI4uiv' : 'vertexAttrib',
-        'vertexAttribIPointer' : 'vertexAttrib',
+        'vertexAttribIPointer' : 'vertexAttribPointer',
         'vertexAttribDivisor' : 'vertexAttribDivisor',
         'createQuery' : 'genQueries',
         'deleteQuery' : 'deleteQueries',
