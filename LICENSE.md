@@ -1,4 +1,4 @@
-Copyright 2011-2014 Analytical Graphics Inc. and Contributors
+Copyright 2011-2015 Analytical Graphics Inc. and Contributors
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

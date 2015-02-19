@@ -1,5 +1,9 @@
-a:link, a:hover, a:visited {
+a, a:link, a:visited {
     color: #218bb0;
+    text-decoration: none;
+}
+
+a:hover {
     text-decoration: underline;
 }
 
@@ -104,4 +108,12 @@ th {
 .pipeline .textures {
     top: 200px;
     left: 330px;
+}
+
+a.extension {
+    font-family: "Courier New", monospace;
+}
+
+a.unsupported {
+    color: rgb(200, 200, 200);
 }
