@@ -265,7 +265,6 @@ $(function() {
             'texStorage2D',
             'texStorage3D',
             'texImage3D',
-            'texSubImage2D',
             'texSubImage3D',
             'copyTexSubImage3D',
             'compressedTexImage3D',
