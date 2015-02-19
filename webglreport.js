@@ -192,30 +192,61 @@ $(function() {
         return unMaskedInfo;
     }
     
-    var shortenedNames = [
-        // List longer names before shorter names with the same base.
-        'uniform',
-        'vertexAttribIPointer',
-        'vertexAttribDivisor',
-        'vertexAttrib',
-        'clearBuffer',
-        'samplerParameter'
-    ];
-    var numShortenedNames = shortenedNames.length;
+    var webglToEsNames = {
+        'getInternalformatParameter' : 'getInternalformativ',
+        'uniform1ui' : 'uniform',
+        'uniform2ui' : 'uniform',
+        'uniform3ui' : 'uniform',
+        'uniform4ui' : 'uniform',
+        'uniform1uiv' : 'uniform',
+        'uniform2uiv' : 'uniform',
+        'uniform3uiv' : 'uniform',
+        'uniform4uiv' : 'uniform',
+        'uniformMatrix2x3fv' : 'uniform',
+        'uniformMatrix3x2fv' : 'uniform',
+        'uniformMatrix2x4fv' : 'uniform',
+        'uniformMatrix4x2fv' : 'uniform',
+        'uniformMatrix3x4fv' : 'uniform',
+        'uniformMatrix4x3fv' : 'uniform',
+        'vertexAttribI4i' : 'vertexAttrib',
+        'vertexAttribI4iv' : 'vertexAttrib',
+        'vertexAttribI4ui' : 'vertexAttrib',
+        'vertexAttribI4uiv' : 'vertexAttrib',
+        'vertexAttribIPointer' : 'vertexAttrib',
+        'vertexAttribDivisor' : 'vertexAttribDivisor',
+        'createQuery' : 'genQueries',
+        'deleteQuery' : 'deleteQueries',
+        'endQuery' : 'beginQuery',
+        'getQuery' : 'getQueryiv',
+        'getQueryParameter' : 'getQueryObjectuiv',
+        'samplerParameteri' : 'samplerParameter',
+        'samplerParameterf' : 'samplerParameter',
+        'clearBufferiv' : 'clearBuffer',
+        'clearBufferuiv' : 'clearBuffer',
+        'clearBufferfv' : 'clearBuffer',
+        'clearBufferfi' : 'clearBuffer',
+        'createSampler' : 'genSamplers',
+        'deleteSampler' : 'deleteSamplers',
+        'getSyncParameter' : 'getSynciv',
+        'createTransformFeedback' : 'genTransformFeedbacks',
+        'deleteTransformFeedback' : 'deleteTransformFeedbacks',
+        'endTransformFeedback' : 'beginTransformFeedback',
+        'getIndexedParameter' : 'get',
+        'getActiveUniforms' : 'getActiveUniformsiv',
+        'getActiveUniformBlockParameter' : 'getActiveUniformBlockiv',
+        'createVertexArray' : 'genVertexArrays',
+        'deleteVertexArray' : 'deleteVertexArrays'
+    };
 
     function getWebGL2ExtensionUrl(name) {
-        if (name === 'vertexAttribIPointer') {
-            name = 'vertexAttribPointer';
-        } else {
-            var nameLen = name.length;
-            for (var i = 0; i < numShortenedNames; ++i) {
-                var shortLen = shortenedNames[i].length;
-                if ((name.length >= shortLen) && (name.substring(0, shortLen) === shortenedNames[i])) {
-                    name = shortenedNames[i];
-                    break;
-                }
-            }
+        if (name === 'getBufferSubData') {
+            return 'http://www.opengl.org/sdk/docs/man/docbook4/xhtml/glGetBufferSubData.xml';
         }
+
+        if (webglToEsNames[name]) {
+            name = webglToEsNames[name];
+        }
+
         var filename = 'gl' + name[0].toUpperCase() + name.substring(1) + '.xhtml';
         return 'http://www.khronos.org/opengles/sdk/docs/man3/html/' + filename;
     }
