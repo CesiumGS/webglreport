@@ -23,7 +23,8 @@ $(function() {
 
     var canvas = $('<canvas />', { width: '1', height: '1' }).appendTo('body');
     var gl;
-    var contextName = _.find(['webgl2', 'experimental-webgl2', 'webgl', 'experimental-webgl'], function(name) {
+    var possibleNames = (webglVersion === 2) ? ['webgl2', 'experimental-webgl2'] : ['webgl', 'experimental-webgl'];
+    var contextName = _.find(possibleNames, function (name) {
         gl = canvas[0].getContext(name, { stencil: true });
         return !!gl;
     });
@@ -356,7 +357,6 @@ $(function() {
         ];
 
         var webgl2 = (contextName.indexOf('webgl2') !== -1);
-        var instructions = '';
 
         var functions = [];
         var totalImplemented = 0;
@@ -373,17 +373,12 @@ $(function() {
                 }
                 functions.push({ name: name, className: className });
             }
-        } else {
-            if (navigator.userAgent.indexOf('Firefox') !== -1) {
-                instructions = 'To enable WebGL 2 in Firefox, see <a href="https://wiki.mozilla.org/Platform/GFX/WebGL2">https://wiki.mozilla.org/Platform/GFX/WebGL2</a>.';
-            }
         }
 
         return {
             status : webgl2 ? (totalImplemented + ' of ' + length + ' new functions implemented.') :
                 'webgl2 and experimental-webgl2 contexts not available.',
-            functions : functions,
-            instructions : instructions
+            functions : functions
         };
     }
 
@@ -429,8 +424,7 @@ $(function() {
         draftExtensionsInstructions: getDraftExtensionsInstructions(),
 
         webgl2Status : webgl2Status.status,
-        webgl2Functions : webgl2Status.functions,
-        webgl2Instructions : webgl2Status.instructions
+        webgl2Functions : webgl2Status.functions
     });
 
     if (window.externalHost) {

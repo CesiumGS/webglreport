@@ -62,20 +62,21 @@ body {
 .webglVersionTabs a.active,
 .webglVersionTabs a.active:visited {
     background-color: #00A900;
-    color: #42CEFF;
+    color: #FFF;
     padding: 8px 15px;
 }
 
 .warn .webglVersionTabs a.active,
 .warn .webglVersionTabs a.active:visited {
     background-color: #A90000;
-    color: #42CEFF;
+    color: #FFF;
 }
 
 .header {
     background: #00A900;
     overflow: hidden;
     margin-bottom: 8px;
+    padding: 0 5px;
 }
 
 .warn .header {

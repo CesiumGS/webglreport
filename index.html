@@ -202,6 +202,7 @@
                     <%= report.draftExtensionsInstructions %>
                 </td>
             </tr>
+            <% if (report.webglVersion === 2) { %>
             <tr>
                 <th colspan="2"><br /><a href="https://www.khronos.org/registry/webgl/specs/latest/2.0/">WebGL 2</a> Functions Implementation Status:</th>
             </tr>
@@ -218,12 +219,8 @@
                         <a class="<%= e.className %>" href="<%= getWebGL2ExtensionUrl(e.name) %>"><%= e.name %></a>
                     </td>
                 </tr>
-            <% }) %>
-            <tr>
-                <td colspan="2">
-                    <%= report.webgl2Instructions %>
-                </td>
-            </tr>
+            <% }); %>
+            <% } %>
             <% } %>
         </table>
     </script>
@@ -243,12 +240,18 @@
     <script type="text/template" id="webglNotSupportedTemplate">
         <div class="header">
             <p>&times; This browser does not support WebGL <%= report.webglVersion %></p>
+            <% if (report.webglVersion === 2 && report.userAgent.indexOf('Firefox') !== -1) { %>
+            <p>
+                To enable WebGL 2 in Firefox, see <a href="https://wiki.mozilla.org/Platform/GFX/WebGL2">https://wiki.mozilla.org/Platform/GFX/WebGL2</a>.
+            </p>
+            <% } else { %>
             <p>
                 Check out <a href="http://get.webgl.org/">Get WebGL</a>,
                 or try installing the latest version of
                 <a href="https://www.google.com/chrome">Chrome</a>, or
                 <a href="https://www.mozilla.org/en-US/firefox/">Firefox</a>.
             </p>
+            <% } %>
         </div>
     </script>
 
