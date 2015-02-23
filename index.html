@@ -14,8 +14,10 @@
 <body>
     <script type="text/template" id="reportTemplate">
         <table class="report">
-            <col width="35%" />
-            <col />
+            <colgroup>
+                <col width="35%" />
+                <col />
+            </colgroup>
             <tr>
                 <th>Platform:</th>
                 <td><%= report.platform %></td>
@@ -227,32 +229,47 @@
     </script>
 
     <script type="text/template" id="webglSupportedTemplate">
-        <p>This browser supports WebGL.</p>
+        <div class="header">
+            <p>&#x2713; This browser supports WebGL <%= report.webglVersion %></p>
+        </div>
     </script>
 
     <script type="text/template" id="webglSupportedChromeFrameTemplate">
-        <p>This browser supports WebGL with Chrome Frame.</p>
+        <div class="header">
+            <p>&#x2713; This browser supports WebGL <%= report.webglVersion %> with Chrome Frame.</p>
+        </div>
     </script>
 
     <script type="text/template" id="webglNotSupportedTemplate">
-        <p>This browser does not support WebGL.</p>
-        <p>
-            Check out <a href="http://get.webgl.org/">Get WebGL</a>,
-            or try installing the latest version of
-            <a href="https://www.google.com/chrome">Chrome</a>, or
+        <div class="header">
+            <p>&times; This browser does not support WebGL <%= report.webglVersion %></p>
+            <p>
+                Check out <a href="http://get.webgl.org/">Get WebGL</a>,
+                or try installing the latest version of
+                <a href="https://www.google.com/chrome">Chrome</a>, or
                 <a href="https://www.mozilla.org/en-US/firefox/">Firefox</a>.
-        </p>
+            </p>
+        </div>
     </script>
 
     <script type="text/template" id="webglNotEnabledTemplate">
-        <p>This browser supports WebGL, but it is disabled or unavailable.</p>
-        <p>Sometimes this is the result of older video drivers being rejected by the browser.  Try updating your video drivers if possible.</p>
-        <p>
-            Also check out <a href="http://get.webgl.org/">Get WebGL</a>,
-            or try installing the latest version of
-            <a href="https://www.google.com/chrome">Chrome</a>, or
+        <div class="header">
+            <p>&times; This browser supports WebGL <%= report.webglVersion %>, but it is disabled or unavailable.</p>
+            <p>Sometimes this is the result of older video drivers being rejected by the browser.  Try updating your video drivers if possible.</p>
+            <p>
+                Also check out <a href="http://get.webgl.org/">Get WebGL</a>,
+                or try installing the latest version of
+                <a href="https://www.google.com/chrome">Chrome</a>, or
                 <a href="https://www.mozilla.org/en-US/firefox/">Firefox</a>.
-        </p>
+            </p>
+        </div>
+    </script>
+
+    <script type="text/template" id="webglVersionTabs">
+        <div class="webglVersionTabs">
+            <a href="?v=1" class="<%= report.webglVersion === 1 ? 'active' : '' %>">WebGL 1</a>
+            <a href="?v=2" class="<%= report.webglVersion === 2 ? 'active' : '' %>">WebGL 2</a>
+        </div>
     </script>
 
     <a href="https://github.com/AnalyticalGraphicsInc/webglreport" target="_blank"><img style="position: absolute; top: 0; left: 0; border: 0;" src="images/ForkMe_Ribbons/ForkMe_Blk.png" alt="Fork me on GitHub"></a>
@@ -261,7 +278,7 @@
 
     <p id="javascript_disabled" class="align-center">You need to enable JavaScript to see WebGL.</p>
 
-    <div class="align-center" id="output">
+    <div class="main-output" id="output">
     </div>
 
     <script type="text/javascript">

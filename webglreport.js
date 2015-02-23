@@ -4,14 +4,19 @@
 $(function() {
     "use strict";
 
+    var webglVersion = window.location.search.indexOf('v=2') > 0 ? 2 : 1;
+
     var template = _.template($('#reportTemplate').html());
     var report = {
         platform: navigator.platform,
-        userAgent: navigator.userAgent
+        userAgent: navigator.userAgent,
+        webglVersion: webglVersion
     };
 
-    if (!window.WebGLRenderingContext) {
+    if ((webglVersion === 2 && !window.WebGL2RenderingContext) ||
+        (webglVersion === 1 && !window.WebGLRenderingContext)) {
         // The browser does not support WebGL
+        $('#output').addClass('warn');
         renderReport($('#webglNotSupportedTemplate').html());
         return;
     }
@@ -26,6 +31,7 @@ $(function() {
 
     if (!gl) {
         // The browser supports WebGL, but initialization failed
+        $('#output').addClass('warn');
         renderReport($('#webglNotEnabledTemplate').html());
         return;
     }
@@ -46,7 +52,13 @@ $(function() {
     }
 
     function renderReport(header) {
-        $('#output').html(header + template({
+        var tabsTemplate = _.template($('#webglVersionTabs').html());
+        var headerTemplate = _.template(header);
+        $('#output').html(tabsTemplate({
+            report: report,
+        }) + headerTemplate({
+            report: report,
+        }) + template({
             report: report,
             getExtensionUrl: getExtensionUrl,
             getWebGL2ExtensionUrl: getWebGL2ExtensionUrl

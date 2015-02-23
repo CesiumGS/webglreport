@@ -20,6 +20,7 @@ h1 {
 
 body {
     font-family: arial, Sans-Serif;
+    font-size: 16px;
     color: white;
     background-image: url(images/mtimoon_fromSTK_3d.jpg);
     background-position: right top;
@@ -32,6 +33,60 @@ body {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+}
+
+.main-output {
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+    text-align: center;
+}
+
+.webglVersionTabs {
+    text-align: left;
+    padding-left: 4px;
+    font-size: 20px;
+}
+
+.webglVersionTabs a,
+.webglVersionTabs a:visited {
+    display: inline-block;
+    background-color: #ddd;
+    padding: 5px 10px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    vertical-align: bottom;
+    color: #218bb0;
+}
+
+.webglVersionTabs a.active,
+.webglVersionTabs a.active:visited {
+    background-color: #00A900;
+    color: #42CEFF;
+    padding: 8px 15px;
+}
+
+.warn .webglVersionTabs a.active,
+.warn .webglVersionTabs a.active:visited {
+    background-color: #A90000;
+    color: #42CEFF;
+}
+
+.header {
+    background: #00A900;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.warn .header {
+    background: #A90000;
+}
+
+.header a,
+.header a:visited,
+.warn .header a,
+.warn .header a:visited {
+    color: #42CEFF;
 }
 
 img {
