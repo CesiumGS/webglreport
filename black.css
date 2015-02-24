@@ -194,7 +194,7 @@ th {
 }
 
 .webgl2 .pipeline .framebuffer {
-    top: 530px;
+    top: 550px;
     left: 360px;
 }
 
@@ -210,6 +210,10 @@ th {
 .pipeline .uniformBuffers {
     top: 300px;
     left: 360px;
+}
+
+.webgl2 .pipeline .uniformBuffers {
+    top: 345px;
 }
 
 .pipeline a,

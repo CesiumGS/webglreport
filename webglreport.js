@@ -87,7 +87,7 @@ $(function() {
             }
             return max;
         }
-        return null;
+        return 'n/a';
     }
 
     function formatPower(exponent, verbose) {

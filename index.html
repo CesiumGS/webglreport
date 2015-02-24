@@ -248,10 +248,22 @@
                                     <th>Max Combined Texture Image Units:</th>
                                     <td><%= report.maxCombinedTextureImageUnits %></td>
                                 </tr>
-                                <% if (report.maxAnisotropy) { %>
                                 <tr title="Minimum: 2">
                                     <th>Max Anisotropy:</th>
                                     <td><%= report.maxAnisotropy %></td>
+                                </tr>
+                                <% if (report.webglVersion > 1) { %>
+                                <tr>
+                                    <th>Max 3D Texture Size:</th>
+                                    <td><%= report.max3dTextureSize %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Array Texture Layers:</th>
+                                    <td><%= report.maxArrayTextureLayers %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Texture LOD Bias:</th>
+                                    <td><%= report.maxTextureLodBias %></td>
                                 </tr>
                                 <% } %>
                             </table>
