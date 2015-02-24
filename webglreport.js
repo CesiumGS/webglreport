@@ -525,7 +525,7 @@ $(function() {
 
         var arrowLeftX = leftBox.x + leftBox.width;
         var arrowRightX = rightBox.x - 15;
-        var arrowRightY = rightBox.y + rightBox.height * 0.70;
+        var arrowRightY = rightBox.y + rightBox.height * 0.30;
         context.moveTo(arrowLeftX, arrowRightY);
         context.lineTo(arrowRightX, arrowRightY);
         context.stroke();
@@ -548,7 +548,7 @@ $(function() {
     var arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2;
     var arrowMidY = arrowRightY;
     var arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2);
-    var arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height * 0.33);
+    var arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height * 0.55);
     var arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15;
     var arrowTopLeftY = arrowTopMidY;
     var arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15;
@@ -599,8 +599,8 @@ $(function() {
 
     drawLeftHead(arrowBottomLeftX, arrowBottomLeftY);
 
-    drawDownArrow(vertexShaderBox, transformFeedbackBox);
-    drawDownArrow(transformFeedbackBox, rasterizerBox);
+    drawRightArrow(vertexShaderBox, transformFeedbackBox);
+    drawDownArrow(vertexShaderBox, rasterizerBox);
     drawDownArrow(rasterizerBox, fragmentShaderBox);
-    drawRightArrow(fragmentShaderBox, framebufferBox);
+    drawDownArrow(fragmentShaderBox, framebufferBox);
 });

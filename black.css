@@ -162,32 +162,32 @@ th {
 }
 
 .pipeline .transformFeedback {
-    top: 215px;
-    left: 5px;
+    top: 10px;
+    left: 360px;
 }
 
 .pipeline .rasterizer {
-    top: 350px;
+    top: 220px;
     left: 5px;
 }
 
 .pipeline .fragmentShader {
-    top: 460px;
+    top: 335px;
     left: 5px;
 }
 
 .pipeline .framebuffer {
-    top: 475px;
-    left: 360px;
+    top: 520px;
+    left: 5px;
 }
 
 .pipeline .textures {
-    top: 120px;
+    top: 140px;
     left: 360px;
 }
 
 .pipeline .uniformBuffers {
-    top: 260px;
+    top: 300px;
     left: 360px;
 }
 
@@ -215,6 +215,9 @@ a.unsupported {
     }
     .report {
         min-height: 660px;
+    }
+    .warn .report {
+        min-height: 0;
     }
     .pipeline {
         position: absolute;
