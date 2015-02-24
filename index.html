@@ -94,6 +94,24 @@
                                     <th>Best float precision:</th>
                                     <td><%= report.vertexShaderBestPrecision %></td>
                                 </tr>
+                                <% if (report.webglVersion > 1) { %>
+                                <tr>
+                                    <th>Max Vertex Uniform Components:</th>
+                                    <td><%= report.maxVertexUniformComponents %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Vertex Uniform Blocks:</th>
+                                    <td><%= report.maxVertexUniformBlocks %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Vertex Output Components:</th>
+                                    <td><%= report.maxVertexOutputComponents %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Varying Components:</th>
+                                    <td><%= report.maxVaryingComponents %></td>
+                                </tr>
+                                <% } %>
                             </table>
                         </div>
                         <div class="transformFeedback">
@@ -104,15 +122,15 @@
                             </div>
                             <% } else { %>
                             <table>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Interleaved Components:</th>
                                     <td><%= report.maxTransformFeedbackInterleavedComponents %></td>
                                 </tr>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Separate Attribs:</th>
                                     <td><%= report.maxTransformFeedbackSeparateAttribs %></td>
                                 </tr>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Separate Components:</th>
                                     <td><%= report.maxTransformFeedbackSeparateComponents %></td>
                                 </tr>
@@ -151,15 +169,52 @@
                                     <th>Best float precision:</th>
                                     <td><%= report.fragmentShaderBestPrecision %></td>
                                 </tr>
+                                <% if (report.webglVersion > 1) { %>
+                                <tr>
+                                    <th>Max Fragment Uniform Components:</th>
+                                    <td><%= report.maxFragmentUniformComponents %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Fragment Uniform Blocks:</th>
+                                    <td><%= report.maxFragmentUniformBlocks %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Fragment Input Components:</th>
+                                    <td><%= report.maxFragmentInputComponents %></td>
+                                </tr>
+                                <tr>
+                                    <th>Min Program Texel Offset:</th>
+                                    <td><%= report.minProgramTexelOffset %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Program Texel Offset:</th>
+                                    <td><%= report.maxProgramTexelOffset %></td>
+                                </tr>
+                                <% } %>
                             </table>
                         </div>
                         <div class="framebuffer">
                             <h1>Framebuffer</h1>
                             <table>
+                                <% if (report.webglVersion > 1) { %>
+                                <tr>
+                                    <th>Max Draw Buffers:</th>
+                                    <td><%= report.maxDrawBuffers %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Color Attachments:</th>
+                                    <td><%= report.maxColorAttachments %></td>
+                                </tr>
+                                <tr>
+                                    <th>Max Samples:</th>
+                                    <td><%= report.maxSamples %></td>
+                                </tr>
+                                <% } else { %>
                                 <tr>
                                     <th>Max Color Buffers:</th>
                                     <td><%= report.maxColorBuffers %></td>
                                 </tr>
+                                <% } %>
                                 <tr>
                                     <th>RGBA Bits:</th>
                                     <td>[<%= report.redBits %>, <%= report.greenBits %>, <%= report.blueBits %>, <%= report.alphaBits %>]</td>
@@ -209,27 +264,27 @@
                             </div>
                             <% } else { %>
                             <table>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Uniform Buffer Bindings:</th>
                                     <td><%= report.maxUniformBufferBindings %></td>
                                 </tr>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Uniform Block Size:</th>
                                     <td><%= report.maxUniformBlockSize %></td>
                                 </tr>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Uniform Buffer Offset Alignment:</th>
                                     <td><%= report.uniformBufferOffsetAlignment %></td>
                                 </tr>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Combined Uniform Blocks:</th>
                                     <td><%= report.maxCombinedUniformBlocks %></td>
                                 </tr>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Combined Vertex Uniform Components:</th>
                                     <td><%= report.maxCombinedVertexUniformComponents %></td>
                                 </tr>
-                                <tr title="Minimum: ???">
+                                <tr>
                                     <th>Max Combined Fragment Uniform Components:</th>
                                     <td><%= report.maxCombinedFragmentUniformComponents %></td>
                                 </tr>

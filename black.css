@@ -107,7 +107,7 @@ img {
     width: 100%;
     color: black;
     box-sizing: border-box;
-    font-size: 9pt;
+    font-size: 12px;
     text-align: left;
     border-style: ridge;
     border-width: 3px;
@@ -134,6 +134,10 @@ th {
     height: 660px;
     color: white;
     position: relative;
+}
+
+.webgl2 .pipeline {
+    height: 730px;
 }
 
 .pipeline table {
@@ -171,9 +175,17 @@ th {
     left: 5px;
 }
 
+.webgl2 .pipeline .rasterizer {
+    top: 320px;
+}
+
 .pipeline .fragmentShader {
     top: 335px;
     left: 5px;
+}
+
+.webgl2 .pipeline .fragmentShader {
+    top: 435px;
 }
 
 .pipeline .framebuffer {
@@ -181,9 +193,18 @@ th {
     left: 5px;
 }
 
+.webgl2 .pipeline .framebuffer {
+    top: 530px;
+    left: 360px;
+}
+
 .pipeline .textures {
     top: 140px;
     left: 360px;
+}
+
+.webgl2 .pipeline .textures {
+    top: 150px;
 }
 
 .pipeline .uniformBuffers {
@@ -214,14 +235,17 @@ a.unsupported {
         width: 1365px;
     }
     .report {
-        min-height: 660px;
+        min-height: 680px;
+    }
+    .webgl2 .report {
+        min-height: 750px;
     }
     .warn .report {
         min-height: 0;
     }
     .pipeline {
         position: absolute;
-        top: 0;
+        top: 5px;
         right: 0;
     }
 }

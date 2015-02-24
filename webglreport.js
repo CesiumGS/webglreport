@@ -13,6 +13,10 @@ $(function() {
         webglVersion: webglVersion
     };
 
+    if (webglVersion === 2) {
+        $('body').addClass('webgl2');
+    }
+
     if ((webglVersion === 2 && !window.WebGL2RenderingContext) ||
         (webglVersion === 1 && !window.WebGLRenderingContext)) {
         // The browser does not support WebGL
@@ -206,7 +210,7 @@ $(function() {
     }
 
     function showNull(v) {
-        return (v === null) ? 'null' : v;
+        return (v === null) ? 'n/a' : v;
     }
     
     var webglToEsNames = {
@@ -555,12 +559,12 @@ $(function() {
         drawDownHead(arrowBottomX, arrowBottomY);
     }
 
-    function drawRightArrow(leftBox, rightBox) {
+    function drawRightArrow(leftBox, rightBox, factor) {
         context.beginPath();
 
         var arrowLeftX = leftBox.x + leftBox.width;
         var arrowRightX = rightBox.x - 15;
-        var arrowRightY = rightBox.y + rightBox.height * 0.30;
+        var arrowRightY = rightBox.y + rightBox.height * factor;
         context.moveTo(arrowLeftX, arrowRightY);
         context.lineTo(arrowRightX, arrowRightY);
         context.stroke();
@@ -582,7 +586,7 @@ $(function() {
     var arrowRightY = texturesBox.y + (texturesBox.height / 2);
     var arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2;
     var arrowMidY = arrowRightY;
-    var arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2);
+    var arrowTopMidY = texturesBox.y - 15;
     var arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height * 0.55);
     var arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15;
     var arrowTopLeftY = arrowTopMidY;
@@ -634,10 +638,14 @@ $(function() {
 
     drawLeftHead(arrowBottomLeftX, arrowBottomLeftY);
 
-    drawRightArrow(vertexShaderBox, transformFeedbackBox);
+    drawRightArrow(vertexShaderBox, transformFeedbackBox, 0.5);
     drawDownArrow(vertexShaderBox, rasterizerBox);
     drawDownArrow(rasterizerBox, fragmentShaderBox);
-    drawDownArrow(fragmentShaderBox, framebufferBox);
+    if (webglVersion === 1) {
+        drawDownArrow(fragmentShaderBox, framebufferBox);
+    } else {
+        drawRightArrow(fragmentShaderBox, framebufferBox, 0.7);
+    }
 
     window.gl = gl;
 });
