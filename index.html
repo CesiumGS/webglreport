@@ -96,6 +96,29 @@
                                 </tr>
                             </table>
                         </div>
+                        <div class="transformFeedback">
+                            <h1>Transform Feedback</h1>
+                            <% if (report.webglVersion < 2) { %>
+                            <div class="comingSoon">
+                                Coming in <a href="https://www.khronos.org/registry/webgl/specs/latest/2.0/">WebGL 2</a>
+                            </div>
+                            <% } else { %>
+                            <table>
+                                <tr title="Minimum: ???">
+                                    <th>Max Interleaved Componment:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                                <tr title="Minimum: ???">
+                                    <th>Max Separate Attribs:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                                <tr title="Minimum: ???">
+                                    <th>Max Separate Components:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                            </table>
+                            <% } %>
+                        </div>
                         <div class="rasterizer">
                             <h1>Rasterizer</h1>
                             <table>
@@ -177,6 +200,41 @@
                                 </tr>
                                 <% } %>
                             </table>
+                        </div>
+                        <div class="uniformBuffers">
+                            <h1>Uniform Buffers</h1>
+                            <% if (report.webglVersion < 2) { %>
+                            <div class="comingSoon">
+                                Coming in <a href="https://www.khronos.org/registry/webgl/specs/latest/2.0/">WebGL 2</a>
+                            </div>
+                            <% } else { %>
+                            <table>
+                                <tr title="Minimum: ???">
+                                    <th>Max Uniform Buffer Bindings:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                                <tr title="Minimum: ???">
+                                    <th>Max Uniform Block Size:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                                <tr title="Minimum: ???">
+                                    <th>Uniform Buffer Offset Alignment:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                                <tr title="Minimum: ???">
+                                    <th>Max Combined Uniform Blocks:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                                <tr title="Minimum: ???">
+                                    <th>Max Combined Vertex Uniform Components:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                                <tr title="Minimum: ???">
+                                    <th>Max Combined Fragment Uniform Components:</th>
+                                    <td><%= report.maxTextureSize %></td>
+                                </tr>
+                            </table>
+                            <% } %>
                         </div>
                     </div>
                 </td>

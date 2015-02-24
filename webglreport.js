@@ -488,6 +488,15 @@ $(function() {
         context.fill();
     }
 
+    function drawRightHead(x, y) {
+        context.beginPath();
+        context.moveTo(x - 5, y + 15);
+        context.lineTo(x + 10, y);
+        context.lineTo(x - 5, y - 15);
+        context.quadraticCurveTo(x, y, x - 5, y + 15);
+        context.fill();
+    }
+
     function drawDownHead(x, y) {
         context.beginPath();
         context.moveTo(x + 15, y - 5);
@@ -500,9 +509,9 @@ $(function() {
     function drawDownArrow(topBox, bottomBox) {
         context.beginPath();
 
-        var arrowTopX = (topBox.x + topBox.width) / 2;
+        var arrowTopX = topBox.x + topBox.width / 2;
         var arrowTopY = topBox.y + topBox.height;
-        var arrowBottomX = (bottomBox.x + bottomBox.width) / 2;
+        var arrowBottomX = bottomBox.x + bottomBox.width / 2;
         var arrowBottomY = bottomBox.y - 15;
         context.moveTo(arrowTopX, arrowTopY);
         context.lineTo(arrowBottomX, arrowBottomY);
@@ -511,18 +520,35 @@ $(function() {
         drawDownHead(arrowBottomX, arrowBottomY);
     }
 
+    function drawRightArrow(leftBox, rightBox) {
+        context.beginPath();
+
+        var arrowLeftX = leftBox.x + leftBox.width;
+        var arrowRightX = rightBox.x - 15;
+        var arrowRightY = rightBox.y + rightBox.height * 0.70;
+        context.moveTo(arrowLeftX, arrowRightY);
+        context.lineTo(arrowRightX, arrowRightY);
+        context.stroke();
+
+        drawRightHead(arrowRightX, arrowRightY);
+    }
+
+    var webgl2color = (webglVersion > 1) ? '#02AFCF' : '#aaa';
+
     var vertexShaderBox = drawBox($('.vertexShader'), '#ff6700');
+    var transformFeedbackBox = drawBox($('.transformFeedback'), webgl2color);
     var rasterizerBox = drawBox($('.rasterizer'), '#3130cb');
     var fragmentShaderBox = drawBox($('.fragmentShader'), '#ff6700');
     var framebufferBox = drawBox($('.framebuffer'), '#7c177e');
     var texturesBox = drawBox($('.textures'), '#3130cb');
+    var uniformBuffersBox = drawBox($('.uniformBuffers'), webgl2color);
 
     var arrowRightX = texturesBox.x;
     var arrowRightY = texturesBox.y + (texturesBox.height / 2);
     var arrowMidX = (texturesBox.x + vertexShaderBox.x + vertexShaderBox.width) / 2;
     var arrowMidY = arrowRightY;
     var arrowTopMidY = vertexShaderBox.y + (vertexShaderBox.height / 2);
-    var arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height / 2);
+    var arrowBottomMidY = fragmentShaderBox.y + (fragmentShaderBox.height * 0.33);
     var arrowTopLeftX = vertexShaderBox.x + vertexShaderBox.width + 15;
     var arrowTopLeftY = arrowTopMidY;
     var arrowBottomLeftX = fragmentShaderBox.x + fragmentShaderBox.width + 15;
@@ -565,11 +591,16 @@ $(function() {
     context.lineTo(arrowMidX, arrowBottomMidY);
     context.lineTo(arrowBottomLeftX, arrowBottomLeftY);
 
+    var uniformBuffersMidY = uniformBuffersBox.y + uniformBuffersBox.height / 2;
+    context.moveTo(arrowMidX, uniformBuffersMidY);
+    context.lineTo(arrowRightX, uniformBuffersMidY);
+
     context.stroke();
 
     drawLeftHead(arrowBottomLeftX, arrowBottomLeftY);
 
-    drawDownArrow(vertexShaderBox, rasterizerBox);
+    drawDownArrow(vertexShaderBox, transformFeedbackBox);
+    drawDownArrow(transformFeedbackBox, rasterizerBox);
     drawDownArrow(rasterizerBox, fragmentShaderBox);
-    drawDownArrow(fragmentShaderBox, framebufferBox);
+    drawRightArrow(fragmentShaderBox, framebufferBox);
 });

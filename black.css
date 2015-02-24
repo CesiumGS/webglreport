@@ -140,7 +140,13 @@ th {
     width: 100%;
 }
 
-.pipeline .vertexShader, .pipeline .rasterizer, .pipeline .fragmentShader, .pipeline .framebuffer, .pipeline .textures {
+.pipeline .vertexShader,
+.pipeline .transformFeedback,
+.pipeline .rasterizer,
+.pipeline .fragmentShader,
+.pipeline .framebuffer,
+.pipeline .textures,
+.pipeline .uniformBuffers {
     position: absolute;
     width: 265px;
 }
@@ -155,24 +161,39 @@ th {
     left: 5px;
 }
 
-.pipeline .rasterizer {
-    top: 220px;
+.pipeline .transformFeedback {
+    top: 215px;
     left: 5px;
 }
 
-.pipeline .fragmentShader {
+.pipeline .rasterizer {
     top: 350px;
     left: 5px;
 }
 
-.pipeline .framebuffer {
-    top: 520px;
+.pipeline .fragmentShader {
+    top: 460px;
     left: 5px;
 }
 
-.pipeline .textures {
-    top: 200px;
+.pipeline .framebuffer {
+    top: 475px;
     left: 360px;
+}
+
+.pipeline .textures {
+    top: 120px;
+    left: 360px;
+}
+
+.pipeline .uniformBuffers {
+    top: 260px;
+    left: 360px;
+}
+
+.pipeline a,
+.pipeline a:visited {
+    color: #fff;
 }
 
 a.extension {
@@ -181,6 +202,11 @@ a.extension {
 
 a.unsupported {
     color: rgb(200, 200, 200);
+}
+
+.comingSoon {
+    text-align: center;
+    padding: 10px;
 }
 
 @media only screen and (min-width:1470px) {
