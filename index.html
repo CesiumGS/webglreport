@@ -13,13 +13,9 @@
 </head>
 <body>
     <script type="text/template" id="reportTemplate">
-        <table class="report">
-            <colgroup>
-                <col width="35%" />
-                <col />
-            </colgroup>
+        <div class="report"><table>
             <tr>
-                <th>Platform:</th>
+                <th class="main-left-column">Platform:</th>
                 <td><%= report.platform %></td>
             </tr>
             <tr>
@@ -222,7 +218,7 @@
             <% }); %>
             <% } %>
             <% } %>
-        </table>
+        </table></div>
     </script>
 
     <script type="text/template" id="webglSupportedTemplate">
