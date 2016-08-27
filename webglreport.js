@@ -134,9 +134,10 @@ $(function() {
     function getAngle(gl) {
         var lineWidthRange = describeRange(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE));
 
-        // Heuristic: ANGLE is only on Windows, not in IE, and does not implement line width greater than one.
+        // Heuristic: ANGLE is only on Windows, not in IE, and not in Edge, and does not implement line width greater than one.
         var angle = ((navigator.platform === 'Win32') || (navigator.platform === 'Win64')) &&
             (gl.getParameter(gl.RENDERER) !== 'Internet Explorer') &&
+            (gl.getParameter(gl.RENDERER) !== 'Microsoft Edge') &&
             (lineWidthRange === describeRange([1,1]));
 
         if (angle) {
