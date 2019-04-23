@@ -467,6 +467,13 @@ $(function() {
         });
     }
 
+    if (gl.getError()) {
+        // The implementatiion is bad
+        $('#output').addClass('warn');
+        renderReport($('#webglBadImplementation').html());
+        return;
+    }
+
     if (window.externalHost) {
         // Tab is running with Chrome Frame
         renderReport($('#webglSupportedChromeFrameTemplate').html());

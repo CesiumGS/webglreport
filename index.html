@@ -389,6 +389,18 @@
         </div>
     </script>
 
+    <script type="text/template" id="webglBadImplementation">
+        <div class="header">
+            <p>&times; This browser claims to supports WebGL <%= report.webglVersion %>, but it has an invalid or incomplete implementation.</p>
+            <p>
+                Check out <a href="http://get.webgl.org/">Get WebGL</a>,
+                or try installing the latest version of
+                <a href="https://www.google.com/chrome">Chrome</a>, or
+                <a href="https://www.mozilla.org/en-US/firefox/">Firefox</a>.
+            </p>
+        </div>
+    </script>
+
     <script type="text/template" id="webglVersionTabs">
         <div class="webglVersionTabs">
             <a href="?v=1" class="<%= report.webglVersion === 1 ? 'active' : '' %>">WebGL 1</a>
